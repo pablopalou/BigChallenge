@@ -13,9 +13,12 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "friendsofphp/php-cs-fixer": "^3.8",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
+        "nunomaduro/larastan": "^2.0",
+        "phpstan/phpstan": "^1.6",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0"
     },
@@ -32,6 +35,12 @@
         }
     },
     "scripts": {
+        "sniff": [
+            "./vendor/bin/php-cs-fixer fix -vvv --dry-run --show-progress=dots"
+        ],
+        "lint": [
+            "./vendor/bin/php-cs-fixer fix -vvv --show-progress=dots"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
