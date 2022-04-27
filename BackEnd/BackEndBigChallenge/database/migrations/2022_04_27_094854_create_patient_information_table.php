@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('patient_information', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
             $table->timestamps();
             $table->string("gender");
             $table->double("height");
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date("birth");
             $table->string("diseases");
             $table->string("previous_treatments");
+            // i want this foreignKey to be the primary key of this table
             $table->foreignId("user_id")->unique();
         });
     }
