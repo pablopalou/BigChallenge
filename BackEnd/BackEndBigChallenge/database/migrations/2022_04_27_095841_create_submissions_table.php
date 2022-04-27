@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Submission;
 
 return new class extends Migration
 {
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('symptoms');
-            $table->string('state')->default("pending");
+            $table->string('state')->default(Submission::STATUS_PENDING);
             $table->string('prescriptions')->nullable();
             // must have a patient that is in users table, but doctor may be null
             // doubt: how to delete only pending sumbissions when patient delete his/her account?
