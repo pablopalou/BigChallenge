@@ -47,4 +47,4 @@ jobs:
 
       defaults:
         run:
-          working-directory: BackEnd/BackEndBigChallenge
+          working-directory: ./BackEnd/BackEndBigChallenge
