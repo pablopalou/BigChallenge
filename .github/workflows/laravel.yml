@@ -45,6 +45,6 @@ jobs:
         run: |
           vendor/bin/phpstan analyse --level=4 --no-progress
 
-      defaults:
-        run:
-          working-directory: ./BackEnd/BackEndBigChallenge
+defaults:
+  run:
+    working-directory: ./BackEnd/BackEndBigChallenge
