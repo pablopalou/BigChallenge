@@ -22,7 +22,7 @@ jobs:
         with:
           commit_message: Fix styling
     
-  defaults:
-      run:
-        working-directory: BackEnd/BackEndBigChallenge
+      defaults:
+          run:
+            working-directory: BackEnd/BackEndBigChallenge
 
