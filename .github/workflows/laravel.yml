@@ -44,3 +44,7 @@ jobs:
       - name: Execute Code Static Analysis (PHP Stan + Larastan)
         run: |
           vendor/bin/phpstan analyse --level=4 --no-progress
+
+    defaults:
+      run:
+        working-directory: BackEnd/BackEndBigChallenge
