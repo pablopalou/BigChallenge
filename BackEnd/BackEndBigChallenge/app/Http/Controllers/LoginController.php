@@ -20,6 +20,7 @@ class LoginController extends Controller
             ]);
         }
 
+        // DOUBT
         // i have the doubt about if i can choose any name for the token. What does it means? What is the purpose of giving the token a name?
         return response()->json([
             'status' => 200,
