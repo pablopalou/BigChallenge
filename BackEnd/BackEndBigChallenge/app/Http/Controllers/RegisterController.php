@@ -22,10 +22,10 @@ class RegisterController extends Controller
         // DOUBT
         // I saw on the internet that i should dispatch an event in this way. But... what is the purpose of doing this? What will do this line?
         event(new Registered($user));
-        
+
         return response()->json([
             'status' => 200,
-            'message' => 'User registered succesfully'
+            'message' => 'User registered succesfully',
         ]);
     }
 }
