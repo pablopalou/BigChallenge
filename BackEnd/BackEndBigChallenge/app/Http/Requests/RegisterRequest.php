@@ -33,7 +33,7 @@ class RegisterRequest extends FormRequest
             'weight' => 'required | numeric | max:300 | min:1',
             'birth' => 'required | date | before:today',
             'grade' => 'required_if:role:Doctor | nullable | numeric | min:1 | max:5',
-            'speciality' => 'required_if:role:Doctor | nullable'
+            'speciality' => 'required_if:role:Doctor | nullable',
         ];
     }
 }
