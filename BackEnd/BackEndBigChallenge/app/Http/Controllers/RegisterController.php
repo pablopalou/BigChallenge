@@ -8,6 +8,7 @@ use App\Models\PatientInformation;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -42,7 +43,7 @@ class RegisterController extends Controller
         return [
             'name' => $arguments['name'],
             'email' => $arguments['email'],
-            'password' => $arguments['password'],
+            'password' => Hash::make($arguments['password']),
         ];
     }
 
