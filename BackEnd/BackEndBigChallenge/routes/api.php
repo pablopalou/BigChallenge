@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ResendVerificationEmailController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Http\Request;
@@ -27,3 +28,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class])->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', [ResendVerificationEmailController::class])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::post('/login', LoginController::class);
