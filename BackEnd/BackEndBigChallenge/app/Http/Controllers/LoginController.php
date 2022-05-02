@@ -6,6 +6,7 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+
 class LoginController extends Controller
 {
     public function __invoke(LoginRequest $request): JsonResponse
