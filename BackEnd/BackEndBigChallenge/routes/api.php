@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // @TODO: create view for email not verified yet (when y add the midlleware verified and a user attempts to access, then they will be redirected to the verification.notice named route.)
 
+// @TODO: put routes grouped by roles
+
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class])->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', [ResendVerificationEmailController::class])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
