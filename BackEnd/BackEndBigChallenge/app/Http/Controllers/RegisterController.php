@@ -30,8 +30,7 @@ class RegisterController extends Controller
             DoctorInformation::create($doctorPayload);
         }
 
-        // @TODO: Dispatch Event Register  ( event(new Registered($user)); )
-
+        event(new Registered($user));
         return response()->json([
             'status' => 200,
             'message' => 'User registered succesfully',
