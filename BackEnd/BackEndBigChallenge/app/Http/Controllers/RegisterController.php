@@ -31,6 +31,7 @@ class RegisterController extends Controller
         }
 
         event(new Registered($user));
+
         return response()->json([
             'status' => 200,
             'message' => 'User registered succesfully',
