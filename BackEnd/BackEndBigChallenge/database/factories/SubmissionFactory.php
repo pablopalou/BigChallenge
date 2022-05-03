@@ -46,4 +46,5 @@ class SubmissionFactory extends Factory
             }
         });
     }
+
 }
