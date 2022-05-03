@@ -19,8 +19,6 @@ return new class extends Migration {
             $table->string('symptoms');
             $table->string('state')->default(Submission::STATUS_PENDING);
             $table->string('prescriptions')->nullable();
-            // must have a patient that is in users table, but doctor may be null
-            // doubt: how to delete only pending sumbissions when patient delete his/her account?
             $table->foreignId('patient_id')->constrained('users');
             $table->foreignId('doctor_id')->nullable()->constrained('users');
         });
