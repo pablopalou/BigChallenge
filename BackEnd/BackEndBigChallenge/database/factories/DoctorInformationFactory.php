@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class DoctorInformationFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'grade' => $this->faker->numberBetween(1, 5),
+            'speciality' => $this->faker->randomElement(['Cardiology', 'Dermatology', 'Emergency medicine', 'Gastroenterology', 'Oncology', 'General', 'Neurology', 'Neurosurgery', 'Gynecology', 'Opthalmology', 'Pediatrics']),
+            'user_id' => User::factory(),
         ];
     }
 }
