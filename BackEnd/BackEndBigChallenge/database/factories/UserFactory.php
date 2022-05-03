@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -27,8 +28,6 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
-     *
      * @return static
      */
     public function unverified()
@@ -39,4 +38,19 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    /*
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    // public function configure()
+    // {
+    //     return $this->afterMaking(function (User $user) {
+    //         //
+    //     })->afterCreating(function (User $user) {
+    //         $id = $user->id;
+
+    //     });
+    // }
 }

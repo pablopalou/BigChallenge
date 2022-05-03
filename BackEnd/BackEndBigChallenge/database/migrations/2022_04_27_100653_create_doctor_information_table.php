@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->integer('grade')->default(1);
             $table->string('speciality')->default('General');
-            $table->foreignId('user_id')->unique();
+            $table->foreignId('user_id')->constrained('users');
         });
     }
 

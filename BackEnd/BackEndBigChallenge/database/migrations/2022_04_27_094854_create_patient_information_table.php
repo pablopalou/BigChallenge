@@ -17,12 +17,11 @@ return new class extends Migration {
             $table->timestamps();
             $table->string('gender');
             $table->double('height');
-            $table->dobule('weight');
+            $table->double('weight');
             $table->date('birth');
             $table->string('diseases');
             $table->string('previous_treatments');
-            // i want this foreignKey to be the primary key of this table
-            $table->foreignId('user_id')->unique();
+            $table->foreignId('user_id')->constrained('users');
         });
     }
 
