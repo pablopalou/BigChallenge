@@ -8,6 +8,7 @@ use App\Models\PatientInformation;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -18,18 +19,16 @@ class RegisterController extends Controller
 
         // here we have to create the information of patient (and doctor if it is a doctor)
         // we create the patientInformation and associate it with the user
-        $patientPayload = $this->getPatientPayload($arguments);
-        $patientPayload['user_id'] = $user->id;
+        $patientPayload = $this->getPatientPayload($arguments, $user);
         PatientInformation::create($patientPayload);
 
         // we have to create the doctor only if the role is Doctor
         if ($arguments['role'] === 'Doctor') {
-            $doctorPayload = $this->getDoctorPayload($arguments);
-            $doctorPayload['user_id'] = $user->id;
+            $doctorPayload = $this->getDoctorPayload($arguments, $user);
             DoctorInformation::create($doctorPayload);
         }
 
-        // @TODO: Dispatch Event Register  ( event(new Registered($user)); )
+        event(new Registered($user));
 
         return response()->json([
             'status' => 200,
@@ -37,16 +36,16 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function getUserPayload($arguments)
+    public function getUserPayload(array $arguments): array
     {
         return [
             'name' => $arguments['name'],
             'email' => $arguments['email'],
-            'password' => $arguments['password'],
+            'password' => Hash::make($arguments['password']),
         ];
     }
 
-    public function getPatientPayload($arguments)
+    public function getPatientPayload(array $arguments, User $user): array
     {
         return [
             'gender' => $arguments['gender'],
@@ -55,14 +54,16 @@ class RegisterController extends Controller
             'birth' => $arguments['birth'],
             'diseases' => $arguments['diseases'],
             'previous_treatments' => $arguments['previous_treatments'],
+            'user_id' => $user->id,
         ];
     }
 
-    public function getDoctorPayload($arguments)
+    public function getDoctorPayload(array $arguments, User $user): array
     {
         return [
             'grade' => $arguments['grade'],
             'speciality' => $arguments['speciality'],
+            'user_id' => $user->id,
         ];
     }
 }
