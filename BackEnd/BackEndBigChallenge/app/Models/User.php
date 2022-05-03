@@ -43,23 +43,27 @@ class User extends Authenticatable
 
     // HasOne relation can be null, it's not required to have relation row in database. Just check it while you get it.
     // A doctor can also be a patient, so every time a doctor register, we will register as a patient too.
-    public function patientInformation(){
+    public function patientInformation()
+    {
         return $this->hasOne(PatientInformation::class, 'user_id');
     }
-    public function doctorInformation(){
+
+    public function doctorInformation()
+    {
         return $this->hasOne(DoctorInformation::class, 'user_id');
     }
 
     // if we have a doctor, we will have all the submissions taken by the doctor
     // a doctor has many submissions, with the doctor_id column on table Sumbission and I want to
     // relate it with column id on User table.
-    public function submissionsTaken(){
+    public function submissionsTaken()
+    {
         return $this->hasMany(Submission::class, 'doctor_id');
     }
 
     // a patient has lot of submissions made
-    public function submissionsMade(){
+    public function submissionsMade()
+    {
         return $this->hasMany(Submission::class, 'patient_id');
     }
-
 }
