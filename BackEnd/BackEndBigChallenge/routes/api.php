@@ -31,8 +31,8 @@ Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class])->middlew
 
 Route::post('/email/verification-notification', [ResendVerificationEmailController::class])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-Route::post('/login', LoginController::class);
+Route::post('/login', LoginController::class)->middleware('guest');
 
-Route::post('/register', RegisterController::class);
+Route::post('/register', RegisterController::class)->middleware('guest');
 
 Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
