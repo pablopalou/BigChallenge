@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\RolesSeeder;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -19,12 +21,14 @@ class RegisterTest extends TestCase
      */
     public function test_register_patient_succesfully($user)
     {
-
+        (new RolesSeeder)->run();
+        Notification::fake();
         $response = $this->postJson('/api/register', $user);
         $response->assertSuccessful();
         $this->assertDatabaseHas('users', ['email' => 'pablitopaloutdm@gmail.com']);
         $this->assertDatabaseHas('patient_information', ['height' => '170', 'weight' => '74']);
         $this->assertDatabaseMissing('doctor_information', []);
+        Notification::assertSentTo([User::first()],VerifyEmail::class);
         $response->assertJson([
             'status' => 200,
             'message' => 'User registered succesfully',
@@ -39,7 +43,7 @@ class RegisterTest extends TestCase
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Patient',
+                'role' => 'patient',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -58,12 +62,14 @@ class RegisterTest extends TestCase
      */
     public function test_register_doctor_succesfully($user)
     {
-
+        (new RolesSeeder)->run();
+        Notification::fake();
         $response = $this->postJson('/api/register', $user);
         $response->assertSuccessful();
         $this->assertDatabaseHas('users', ['email' => 'pablitopaloutdm@gmail.com']);
         $this->assertDatabaseHas('patient_information', ['height' => '170', 'weight' => '74']);
         $this->assertDatabaseHas('doctor_information', ['grade' => 2, 'speciality' => 'Cardiology']);
+        Notification::assertSentTo([User::first()],VerifyEmail::class);
         $response->assertJson([
             'status' => 200,
             'message' => 'User registered succesfully',
@@ -78,7 +84,7 @@ class RegisterTest extends TestCase
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -97,6 +103,7 @@ class RegisterTest extends TestCase
      */
     public function test_register_two_times($user)
     {
+        (new RolesSeeder)->run();
         $this->postJson('/api/register', $user);
         $response2 = $this->postJson('/api/register', $user);
         $response2->assertStatus(422);
@@ -110,7 +117,7 @@ class RegisterTest extends TestCase
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -125,7 +132,7 @@ class RegisterTest extends TestCase
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Patient',
+                'role' => 'patient',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -150,19 +157,21 @@ class RegisterTest extends TestCase
      */
     public function test_invalid_credentials($user)
     {
-
+        Notification::fake();
         $response = $this->postJson('/api/register', $user);
+        Notification::assertNothingSent();
         $response->assertStatus(422);
     }
 
     public function invalidCredentialsProvider(): array
     {
         return [
+
             ['noName' => [
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -176,7 +185,7 @@ class RegisterTest extends TestCase
                 'name' => 'pablito',
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password_confirmation' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -190,7 +199,7 @@ class RegisterTest extends TestCase
                 'name' => 'pablito',
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -205,7 +214,22 @@ class RegisterTest extends TestCase
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'wronggggpassword',
-                'role' => 'Doctor',
+                'role' => 'doctor',
+                'gender' => 'male',
+                'height' => '170',
+                'weight' => '74',
+                'birth' => '2000-12-06',
+                'diseases' => 'diabethes',
+                'previous_treatments' => 't4',
+                'grade' => 2,
+                'speciality' => 'Cardiology',
+            ]],
+            ['shortPass' => [
+                'name' => 'pablito',
+                'email' => 'pablitopaloutdm@gmail.com',
+                'password' => 'short',
+                'password_confirmation' => 'short',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -234,7 +258,7 @@ class RegisterTest extends TestCase
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'height' => '170',
                 'weight' => '74',
                 'birth' => '2000-12-06',
@@ -248,7 +272,7 @@ class RegisterTest extends TestCase
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'weight' => '74',
                 'birth' => '2000-12-06',
@@ -262,7 +286,7 @@ class RegisterTest extends TestCase
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'height' => '170',
                 'birth' => '2000-12-06',
@@ -276,7 +300,7 @@ class RegisterTest extends TestCase
                 'email' => 'pablitopaloutdm@gmail.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -289,7 +313,7 @@ class RegisterTest extends TestCase
                 'name' => 'pablito',
                 'password' => 'password',
                 'password_confirmation' => 'password',
-                'role' => 'Doctor',
+                'role' => 'doctor',
                 'gender' => 'male',
                 'height' => '170',
                 'weight' => '74',
@@ -298,7 +322,65 @@ class RegisterTest extends TestCase
                 'previous_treatments' => 't4',
                 'grade' => 2,
                 'speciality' => 'Cardiology',
-            ]]
+            ]],
+            ['invalidEmail' => [
+                'name' => 'pablito',
+                'email' => 'pablitopaloutdmgmail.com',
+                'password' => 'password',
+                'password_confirmation' => 'password',
+                'role' => 'doctor',
+                'gender' => 'male',
+                'height' => '170',
+                'weight' => '74',
+                'birth' => '2000-12-06',
+                'diseases' => 'diabethes',
+                'previous_treatments' => 't4',
+                'grade' => 2,
+                'speciality' => 'Cardiology',
+            ]],
+            ['noGrade' => [
+                'name' => 'pablito',
+                'email' => 'pablitopaloutdm@gmail.com',
+                'password' => 'password',
+                'password_confirmation' => 'password',
+                'role' => 'doctor',
+                'gender' => 'male',
+                'height' => '170',
+                'weight' => '74',
+                'birth' => '2000-12-06',
+                'diseases' => 'diabethes',
+                'previous_treatments' => 't4',
+                'speciality' => 'Cardiology',
+            ]],
+            ['gradeGreaterThan5' => [
+                'name' => 'pablito',
+                'email' => 'pablitopaloutdm@gmail.com',
+                'password' => 'password',
+                'password_confirmation' => 'password',
+                'role' => 'doctor',
+                'gender' => 'male',
+                'height' => '170',
+                'weight' => '74',
+                'birth' => '2000-12-06',
+                'diseases' => 'diabethes',
+                'grade' => 6,
+                'previous_treatments' => 't4',
+                'speciality' => 'Cardiology',
+            ]],
+            ['noSpeciality' => [
+                'name' => 'pablito',
+                'email' => 'pablitopaloutdm@gmail.com',
+                'password' => 'password',
+                'password_confirmation' => 'password',
+                'role' => 'doctor',
+                'gender' => 'male',
+                'height' => '170',
+                'weight' => '74',
+                'birth' => '2000-12-06',
+                'diseases' => 'diabethes',
+                'previous_treatments' => 't4',
+                'grade' => 2,
+            ]],
         ];
     }
 
