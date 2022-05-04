@@ -28,7 +28,7 @@ class RegisterTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'pablitopaloutdm@gmail.com']);
         $this->assertDatabaseHas('patient_information', ['height' => '170', 'weight' => '74']);
         $this->assertDatabaseMissing('doctor_information', []);
-        Notification::assertSentTo([User::first()],VerifyEmail::class);
+        Notification::assertSentTo([User::first()], VerifyEmail::class);
         $response->assertJson([
             'status' => 200,
             'message' => 'User registered succesfully',
@@ -68,7 +68,7 @@ class RegisterTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'pablitopaloutdm@gmail.com']);
         $this->assertDatabaseHas('patient_information', ['height' => '170', 'weight' => '74']);
         $this->assertDatabaseHas('doctor_information', ['grade' => 2, 'speciality' => 'Cardiology']);
-        Notification::assertSentTo([User::first()],VerifyEmail::class);
+        Notification::assertSentTo([User::first()], VerifyEmail::class);
         $response->assertJson([
             'status' => 200,
             'message' => 'User registered succesfully',

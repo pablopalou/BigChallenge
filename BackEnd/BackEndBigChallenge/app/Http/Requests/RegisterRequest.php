@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 
 class RegisterRequest extends FormRequest
 {
@@ -34,12 +33,13 @@ class RegisterRequest extends FormRequest
         'weight' => 'required | numeric | max:300 | min:1',
         'birth' => 'required | date | before:today',
         'diseases' => 'required | nullable',
-        'previous_treatments' => 'required | nullable'];
+        'previous_treatments' => 'required | nullable', ];
 
-        if ($this->get('role') == 'doctor'){
-            $rules['grade'] = [' required' ,'numeric', ' min:1',' max:5'];
+        if ($this->get('role') == 'doctor') {
+            $rules['grade'] = [' required', 'numeric', ' min:1', ' max:5'];
             $rules['speciality'] = 'required';
         }
+
         return $rules;
     }
 }
