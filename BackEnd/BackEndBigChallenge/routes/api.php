@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class])->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::post('/email/verification-notification', [ResendVerificationEmailController::class])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::post('/email/verification-notification', ResendVerificationEmailController::class)->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::post('/login', LoginController::class)->middleware('guest');
 
