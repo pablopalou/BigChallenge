@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -13,6 +12,7 @@ use Tests\TestCase;
 class ResendVerificationEmailTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_resend_verification_email_successfully()
     {
         Notification::fake();
