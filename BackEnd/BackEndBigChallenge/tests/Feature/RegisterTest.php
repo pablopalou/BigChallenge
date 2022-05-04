@@ -52,10 +52,9 @@ class RegisterTest extends TestCase
                 'previous_treatments' => 't4',
                 'grade' => null,
                 'speciality' => null,
-            ]]
+            ]],
         ];
     }
-
 
     /**
      * @dataProvider doctorCredentialsProvider
@@ -93,10 +92,9 @@ class RegisterTest extends TestCase
                 'previous_treatments' => 't4',
                 'grade' => 2,
                 'speciality' => 'Cardiology',
-            ]]
+            ]],
         ];
     }
-
 
     /**
      * @dataProvider validUsersCredentialsProvider
@@ -141,7 +139,7 @@ class RegisterTest extends TestCase
                 'previous_treatments' => 't4',
                 'grade' => null,
                 'speciality' => null,
-            ]]
+            ]],
         ];
     }
 
@@ -383,5 +381,4 @@ class RegisterTest extends TestCase
             ]],
         ];
     }
-
 }
