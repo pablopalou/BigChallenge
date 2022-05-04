@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -19,7 +18,6 @@ class RegisterTest extends TestCase
      */
     public function test_register_patient_succesfully($user)
     {
-
         $response = $this->postJson('/api/register', $user);
         $response->assertSuccessful();
         $this->assertDatabaseHas('users', ['email' => 'pablitopaloutdm@gmail.com']);
@@ -48,17 +46,15 @@ class RegisterTest extends TestCase
                 'previous_treatments' => 't4',
                 'grade' => null,
                 'speciality' => null,
-            ]]
+            ]],
         ];
     }
-
 
     /**
      * @dataProvider doctorCredentialsProvider
      */
     public function test_register_doctor_succesfully($user)
     {
-
         $response = $this->postJson('/api/register', $user);
         $response->assertSuccessful();
         $this->assertDatabaseHas('users', ['email' => 'pablitopaloutdm@gmail.com']);
@@ -87,10 +83,9 @@ class RegisterTest extends TestCase
                 'previous_treatments' => 't4',
                 'grade' => 2,
                 'speciality' => 'Cardiology',
-            ]]
+            ]],
         ];
     }
-
 
     /**
      * @dataProvider validUsersCredentialsProvider
@@ -134,7 +129,7 @@ class RegisterTest extends TestCase
                 'previous_treatments' => 't4',
                 'grade' => null,
                 'speciality' => null,
-            ]]
+            ]],
         ];
     }
 
@@ -150,7 +145,6 @@ class RegisterTest extends TestCase
      */
     public function test_invalid_credentials($user)
     {
-
         $response = $this->postJson('/api/register', $user);
         $response->assertStatus(422);
     }
@@ -298,8 +292,7 @@ class RegisterTest extends TestCase
                 'previous_treatments' => 't4',
                 'grade' => 2,
                 'speciality' => 'Cardiology',
-            ]]
+            ]],
         ];
     }
-
 }
