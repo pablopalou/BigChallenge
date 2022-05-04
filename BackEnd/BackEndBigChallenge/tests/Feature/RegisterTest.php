@@ -14,86 +14,64 @@ class RegisterTest extends TestCase
 {
     use RefreshDatabase;
 
-    // @TODO: Verify email notifications (when register and when fails)
-
-    /**
-     * @dataProvider patientCredentialsProvider
-     */
-    public function test_register_patient_succesfully($user)
+    public function test_register_patient_succesfully()
     {
         (new RolesSeeder)->run();
         Notification::fake();
-        $response = $this->postJson('/api/register', $user);
+        $response = $this->postJson('/api/register', [
+            'name' => 'pablito',
+            'email' => 'pablitopaloutdm@gmail.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'role' => 'patient',
+            'gender' => 'male',
+            'height' => '170',
+            'weight' => '74',
+            'birth' => '2000-12-06',
+            'diseases' => 'diabethes',
+            'previous_treatments' => 't4',
+            'grade' => null,
+            'speciality' => null,
+        ]);
         $response->assertSuccessful();
         $this->assertDatabaseHas('users', ['email' => 'pablitopaloutdm@gmail.com']);
         $this->assertDatabaseHas('patient_information', ['height' => '170', 'weight' => '74']);
         $this->assertDatabaseMissing('doctor_information', []);
-        Notification::assertSentTo([User::first()],VerifyEmail::class);
+        Notification::assertSentTo([User::first()], VerifyEmail::class);
         $response->assertJson([
             'status' => 200,
             'message' => 'User registered succesfully',
         ]);
     }
 
-    public function patientCredentialsProvider(): array
-    {
-        return [
-            ['validPatient' => [
-                'name' => 'pablito',
-                'email' => 'pablitopaloutdm@gmail.com',
-                'password' => 'password',
-                'password_confirmation' => 'password',
-                'role' => 'patient',
-                'gender' => 'male',
-                'height' => '170',
-                'weight' => '74',
-                'birth' => '2000-12-06',
-                'diseases' => 'diabethes',
-                'previous_treatments' => 't4',
-                'grade' => null,
-                'speciality' => null,
-            ]],
-        ];
-    }
-
-    /**
-     * @dataProvider doctorCredentialsProvider
-     */
-    public function test_register_doctor_succesfully($user)
+    public function test_register_doctor_succesfully()
     {
         (new RolesSeeder)->run();
         Notification::fake();
-        $response = $this->postJson('/api/register', $user);
+        $response = $this->postJson('/api/register', [
+            'name' => 'pablito',
+            'email' => 'pablitopaloutdm@gmail.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'role' => 'doctor',
+            'gender' => 'male',
+            'height' => '170',
+            'weight' => '74',
+            'birth' => '2000-12-06',
+            'diseases' => 'diabethes',
+            'previous_treatments' => 't4',
+            'grade' => 2,
+            'speciality' => 'Cardiology',
+        ]);
         $response->assertSuccessful();
         $this->assertDatabaseHas('users', ['email' => 'pablitopaloutdm@gmail.com']);
         $this->assertDatabaseHas('patient_information', ['height' => '170', 'weight' => '74']);
         $this->assertDatabaseHas('doctor_information', ['grade' => 2, 'speciality' => 'Cardiology']);
-        Notification::assertSentTo([User::first()],VerifyEmail::class);
+        Notification::assertSentTo([User::first()], VerifyEmail::class);
         $response->assertJson([
             'status' => 200,
             'message' => 'User registered succesfully',
         ]);
-    }
-
-    public function doctorCredentialsProvider(): array
-    {
-        return [
-            ['validDoctor' => [
-                'name' => 'pablito',
-                'email' => 'pablitopaloutdm@gmail.com',
-                'password' => 'password',
-                'password_confirmation' => 'password',
-                'role' => 'doctor',
-                'gender' => 'male',
-                'height' => '170',
-                'weight' => '74',
-                'birth' => '2000-12-06',
-                'diseases' => 'diabethes',
-                'previous_treatments' => 't4',
-                'grade' => 2,
-                'speciality' => 'Cardiology',
-            ]],
-        ];
     }
 
     /**
