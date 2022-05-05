@@ -2,18 +2,31 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Requests\CreateSumbissionRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SubmissionResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
+    // In the submission I will have everything (the info of the doctor if he/she exists and 
+    // the info of the patient with the info of the sumbission).
+
+    // Remember that doctor and patient are Users so we can access to the realationships DoctorInformation and PatientInfomation.
     public function toArray($request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'symptoms' => $this->symptoms,
+            'state' => $this->state,
+            'prescriptions' => $this->prescriptions,
+            
+            // @TODO: create UserResource and IMPORT IT.
+            'doctor' => $this->when($this->doctor, new UserResource($this->doctor->doctorInformation)),
+            
+            'patient' => new UserResource($this->patient->patientInformation),
+
+        ];
+
+        // What means parent here?
+        // return parent::toArray($request);
     }
 }
