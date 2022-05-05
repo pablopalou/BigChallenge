@@ -23,9 +23,12 @@ class RegisterController extends Controller
         PatientInformation::create($patientPayload);
 
         // we have to create the doctor only if the role is Doctor
-        if ($arguments['role'] === 'Doctor') {
+        if ($arguments['role'] === 'doctor') {
             $doctorPayload = $this->getDoctorPayload($arguments, $user);
             DoctorInformation::create($doctorPayload);
+            $user->assignRole('doctor');
+        } else {
+            $user->assignRole('patient');
         }
 
         event(new Registered($user));
