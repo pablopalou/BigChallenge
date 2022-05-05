@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateSumbissionRequest;
+use App\Http\Requests\CreateSubmissionRequest;
 use App\Http\Resources\SubmissionResource;
 use App\Models\Submission;
 
 class CreateSubmissionController extends Controller
 {
-    public function __invoke(CreateSumbissionRequest $request): SubmissionResource
+    public function __invoke(CreateSubmissionRequest $request): SubmissionResource
     {
         $arguments = $request->validated();
-        $sumbission = Submission::create($arguments);
-        return (new SubmissionResource($sumbission))->additional(['message' => 'Submission created successfully']);
+        $submission = Submission::create($arguments);
+        return (new SubmissionResource($submission))->additional(['message' => 'Submission created successfully']);
     }
 }

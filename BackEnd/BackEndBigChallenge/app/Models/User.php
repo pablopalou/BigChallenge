@@ -56,7 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // if we have a doctor, we will have all the submissions taken by the doctor
-    // a doctor has many submissions, with the doctor_id column on table Sumbission and I want to
+    // a doctor has many submissions, with the doctor_id column on table Submission and I want to
     // relate it with column id on User table.
     public function submissionsTaken()
     {

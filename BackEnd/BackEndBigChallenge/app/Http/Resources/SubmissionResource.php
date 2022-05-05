@@ -2,13 +2,13 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Requests\CreateSumbissionRequest;
+use App\Models\PatientInformation;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SubmissionResource extends JsonResource
 {
     // In the submission I will have everything (the info of the doctor if he/she exists and 
-    // the info of the patient with the info of the sumbission).
+    // the info of the patient with the info of the submission).
 
     // Remember that doctor and patient are Users so we can access to the realationships DoctorInformation and PatientInfomation.
     public function toArray($request): array
@@ -19,8 +19,10 @@ class SubmissionResource extends JsonResource
             'state' => $this->state,
             'prescriptions' => $this->prescriptions,
 
-            'doctor' => $this->when($this->doctor, new UserResource($this->doctor->doctorInformation)),            
-            'patient' => new UserResource($this->patient->patientInformation),
+            'doctor' => $this->when( (! is_null($this->doctor)), function () {
+                return new UserResource($this->doctor->loadMissing('doctorInformation'));           
+            }),
+            'patient' => new UserResource($this->patient->loadMissing('patientInformation')),
         ];
 
         // What means parent here?

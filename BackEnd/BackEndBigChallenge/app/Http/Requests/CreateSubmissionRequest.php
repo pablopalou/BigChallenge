@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\Submission;
-use phpDocumentor\Reflection\Types\Nullable;
 
-class CreateSumbissionRequest extends FormRequest
+class CreateSubmissionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
