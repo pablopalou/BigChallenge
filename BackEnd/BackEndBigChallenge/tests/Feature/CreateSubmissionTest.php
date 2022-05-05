@@ -6,7 +6,6 @@ use App\Models\PatientInformation;
 use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -24,7 +23,7 @@ class CreateSubmissionTest extends TestCase
         $submissionData = [
             'state' => Submission::STATUS_PENDING,
             'symptoms' => 'I have temperature since yeasterday and sore throat',
-            'patient_id' => $patient->user->id
+            'patient_id' => $patient->user->id,
         ];
         $response = $this->postJson('/api/createSubmission', $submissionData);
         $response->assertSuccessful();
@@ -40,12 +39,10 @@ class CreateSubmissionTest extends TestCase
         $submissionData = [
             'state' => Submission::STATUS_PENDING,
             'symptoms' => 'I have temperature since yeasterday and sore throat',
-            'patient_id' => $patient->user->id
+            'patient_id' => $patient->user->id,
         ];
         $response = $this->postJson('/api/createSubmission', $submissionData);
         $response->assertStatus(401);
         $this->assertDatabaseMissing('submissions', $submissionData);
     }
-
-
 }

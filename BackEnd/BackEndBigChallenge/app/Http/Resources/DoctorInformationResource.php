@@ -12,6 +12,6 @@ class DoctorInformationResource extends JsonResource
             'id' => $this->id,
             'grade' => $this->grade,
             'speciality' => $this->speciality,
-        ]; 
+        ];
     }
 }

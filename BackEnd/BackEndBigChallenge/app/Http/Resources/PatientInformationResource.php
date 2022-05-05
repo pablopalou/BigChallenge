@@ -18,6 +18,6 @@ class PatientInformationResource extends JsonResource
             'birth' => Carbon::parse($this->birth)->format('d-m-Y'),
             'diseases' => $this->diseases,
             'previous_treatments' => $this->previous_treatments,
-        ]; 
+        ];
     }
 }
