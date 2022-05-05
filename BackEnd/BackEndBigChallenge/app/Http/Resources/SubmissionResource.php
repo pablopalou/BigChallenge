@@ -18,12 +18,9 @@ class SubmissionResource extends JsonResource
             'symptoms' => $this->symptoms,
             'state' => $this->state,
             'prescriptions' => $this->prescriptions,
-            
-            // @TODO: create UserResource and IMPORT IT.
-            'doctor' => $this->when($this->doctor, new UserResource($this->doctor->doctorInformation)),
-            
-            'patient' => new UserResource($this->patient->patientInformation),
 
+            'doctor' => $this->when($this->doctor, new UserResource($this->doctor->doctorInformation)),            
+            'patient' => new UserResource($this->patient->patientInformation),
         ];
 
         // What means parent here?
