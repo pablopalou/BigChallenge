@@ -17,7 +17,6 @@ class PatientInformationResource extends JsonResource
             'gender' => $this->gender,
             'height' => $this->height,
             'weight' => $this->weight,
-            // see if this format is correct
             'birth' => $this->birth,
             'diseases' => $this->diseases,
             'previous_treatments' => $this->previous_treatments,
