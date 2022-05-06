@@ -45,6 +45,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'birth',
+    ];
+
     // HasOne relation can be null, it's not required to have relation row in database. Just check it while you get it.
     // A doctor can also be a patient, so every time a doctor register, we will register as a patient too.
     public function patientInformation():HasOne

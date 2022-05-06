@@ -2,17 +2,15 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\PatientInformation;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @mixin PatientInformation
  */
 class PatientInformationResource extends JsonResource
 {
-
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
@@ -20,7 +18,7 @@ class PatientInformationResource extends JsonResource
             'height' => $this->height,
             'weight' => $this->weight,
             // see if this format is correct
-            'birth' => Carbon::parse($this->birth)->format('d-m-Y'),
+            'birth' => $this->birth,
             'diseases' => $this->diseases,
             'previous_treatments' => $this->previous_treatments,
         ];

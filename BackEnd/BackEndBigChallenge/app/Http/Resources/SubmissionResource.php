@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Submission;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Submission **/
 class SubmissionResource extends JsonResource
@@ -26,8 +26,5 @@ class SubmissionResource extends JsonResource
             }),
             'patient' => new UserResource($this->patient->loadMissing('patientInformation')),
         ];
-
-        // What means parent here?
-        // return parent::toArray($request);
     }
 }
