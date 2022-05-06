@@ -2,16 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\PatientInformation;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\PatientInformation;
 
 /**
  * @mixin PatientInformation
  */
 class PatientInformationResource extends JsonResource
 {
-
     public function toArray($request)
     {
         return [

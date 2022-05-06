@@ -2,14 +2,14 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\DoctorInformation;
+use Illuminate\Http\Resources\Json\JsonResource;
+
 /**
-* @mixin DoctorInformation
-*/
+ * @mixin DoctorInformation
+ */
 class DoctorInformationResource extends JsonResource
 {
-
     public function toArray($request)
     {
         return [
