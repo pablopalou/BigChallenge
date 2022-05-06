@@ -12,6 +12,7 @@ class CreateSubmissionController extends Controller
     {
         $arguments = $request->validated();
         $submission = Submission::create($arguments);
+
         return (new SubmissionResource($submission))->additional(['message' => 'Submission created successfully']);
     }
 }

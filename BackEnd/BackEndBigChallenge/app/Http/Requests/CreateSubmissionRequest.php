@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Submission;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Models\Submission;
 
 class CreateSubmissionRequest extends FormRequest
 {
@@ -26,7 +26,7 @@ class CreateSubmissionRequest extends FormRequest
     public function rules()
     {
         return [
-            'state' => ['required', Rule::in([Submission::STATUS_PENDING, Submission::STATUS_IN_PROGRESS, Submission::STATUS_READY]) ],
+            'state' => ['required', Rule::in([Submission::STATUS_PENDING, Submission::STATUS_IN_PROGRESS, Submission::STATUS_READY])],
             'symptoms' => ['required'],
             'prescriptions' => ['nullable', 'mimes:txt'],
             'patient_id' => ['required', Rule::exists('patient_information', 'user_id')],

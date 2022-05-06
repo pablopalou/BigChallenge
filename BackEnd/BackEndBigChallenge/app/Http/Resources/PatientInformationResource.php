@@ -4,9 +4,14 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\PatientInformation;
 
+/**
+ * @mixin PatientInformation
+ */
 class PatientInformationResource extends JsonResource
 {
+
     public function toArray($request)
     {
         return [
@@ -18,6 +23,6 @@ class PatientInformationResource extends JsonResource
             'birth' => Carbon::parse($this->birth)->format('d-m-Y'),
             'diseases' => $this->diseases,
             'previous_treatments' => $this->previous_treatments,
-        ]; 
+        ];
     }
 }
