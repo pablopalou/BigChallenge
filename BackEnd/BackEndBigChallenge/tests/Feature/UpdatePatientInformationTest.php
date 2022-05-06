@@ -5,13 +5,13 @@ namespace Tests\Feature;
 use App\Models\PatientInformation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UpdatePatientInformationTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_update_patient_information_successfully()
     {
         $user = User::factory()->create();
@@ -23,13 +23,14 @@ class UpdatePatientInformationTest extends TestCase
             'weight' => '74',
             'birth' => '2000-12-06',
         ];
-        $response = $this->postJson('/api/updatePatientInformation',$newPatientInformation);
+        $response = $this->postJson('/api/updatePatientInformation', $newPatientInformation);
         $response->assertSuccessful();
         $this->assertDatabaseHas('patient_information', $newPatientInformation);
         $response->assertJson([
             'message' => 'Patient information updated successfully',
         ]);
     }
+
     public function test_update_patient_being_a_guest()
     {
         $user = User::factory()->create();
@@ -40,7 +41,7 @@ class UpdatePatientInformationTest extends TestCase
             'weight' => '74',
             'birth' => '2000-12-06',
         ];
-        $response = $this->postJson('/api/updatePatientInformation',$newPatientInformation);
+        $response = $this->postJson('/api/updatePatientInformation', $newPatientInformation);
         $response->assertStatus(401);
         $this->assertDatabaseMissing('patient_information', $newPatientInformation);
     }
@@ -53,7 +54,7 @@ class UpdatePatientInformationTest extends TestCase
         $user = User::factory()->create();
         PatientInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
-        $response = $this->postJson('/api/updatePatientInformation',$data);
+        $response = $this->postJson('/api/updatePatientInformation', $data);
         $response->assertStatus(422);
     }
 

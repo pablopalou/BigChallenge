@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePatientInformationRequest extends FormRequest
 {
@@ -16,9 +16,9 @@ class UpdatePatientInformationRequest extends FormRequest
     {
         return [
             'gender' => ['required', Rule::in(['male', 'female', 'other'])],
-            'height' => ['required' , 'numeric' , 'max:230' , 'min:30'],
-            'weight' => ['required' , 'numeric' , 'max:300' , 'min:1'],
-            'birth' => ['required' , 'date ',' before:today'],
+            'height' => ['required', 'numeric', 'max:230', 'min:30'],
+            'weight' => ['required', 'numeric', 'max:300', 'min:1'],
+            'birth' => ['required', 'date ', ' before:today'],
         ];
     }
 }
