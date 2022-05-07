@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResendVerificationEmailController;
+use App\Http\Controllers\UpdateDoctorInformationController;
 use App\Http\Controllers\UpdatePatientInformationController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Http\Request;
@@ -42,3 +43,5 @@ Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
 Route::post('/createSubmission', CreateSubmissionController::class)->middleware('auth:sanctum');
 
 Route::post('/updatePatientInformation', UpdatePatientInformationController::class)->middleware('auth:sanctum');
+
+Route::post('/updateDoctorInformation', UpdateDoctorInformationController::class)->middleware('auth:sanctum', 'role:doctor');
