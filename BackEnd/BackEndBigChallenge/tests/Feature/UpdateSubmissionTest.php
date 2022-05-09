@@ -14,6 +14,7 @@ use Tests\TestCase;
 class UpdateSubmissionTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_update_submission_successfully_by_patient()
     {
         (new RolesSeeder())->run();
@@ -94,7 +95,7 @@ class UpdateSubmissionTest extends TestCase
 
         $userWithSubmission = User::factory()->create();
         PatientInformation::factory()->create(['user_id' => $userWithSubmission->id]);
-        
+
         Sanctum::actingAs($user);
         Submission::factory()->create([
             'patient_id' => $userWithSubmission->id,
