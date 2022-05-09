@@ -45,3 +45,5 @@ Route::post('/createSubmission', CreateSubmissionController::class)->middleware(
 Route::post('/updatePatientInformation', UpdatePatientInformationController::class)->middleware('auth:sanctum');
 
 Route::post('/updateDoctorInformation', UpdateDoctorInformationController::class)->middleware('auth:sanctum', 'role:doctor');
+
+Route::put('/submission/{submission}/patient', UpdateSubmissionController::class)->middleware('auth:sanctum');
