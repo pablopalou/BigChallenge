@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Submission extends Model
 {
@@ -18,13 +19,13 @@ class Submission extends Model
 
     // if i choose to put user, i must put user_id as the second parameter and in the third, i
     // have to specify the column of the Submission i am relating to.
-    public function patient()
+    public function patient(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'patient_id');
+        return $this->belongsTo(User::class, 'patient_id');
     }
 
-    public function doctor()
+    public function doctor(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'doctor_id');
+        return $this->belongsTo(User::class, 'doctor_id');
     }
 }

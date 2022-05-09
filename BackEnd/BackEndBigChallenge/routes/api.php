@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CreateSubmissionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
@@ -36,3 +37,5 @@ Route::post('/login', LoginController::class)->middleware('guest');
 Route::post('/register', RegisterController::class)->middleware('guest');
 
 Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
+
+Route::post('/createSubmission', CreateSubmissionController::class)->middleware('auth:sanctum');
