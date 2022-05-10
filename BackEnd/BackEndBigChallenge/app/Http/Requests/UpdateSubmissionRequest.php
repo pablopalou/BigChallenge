@@ -6,7 +6,7 @@ use App\Models\Submission;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateSubmissionRequest extends FormRequest
+class UpdateSymptomsRequest extends FormRequest
 {
     public function authorize(): bool
     {
