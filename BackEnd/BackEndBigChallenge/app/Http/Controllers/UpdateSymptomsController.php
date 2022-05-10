@@ -6,7 +6,7 @@ use App\Http\Requests\UpdateSymptomsRequest;
 use App\Http\Resources\SubmissionResource;
 use App\Models\Submission;
 
-class UpdateSubmissionController extends Controller
+class UpdateSymptomsController extends Controller
 {
     public function __invoke(UpdateSymptomsRequest $request, Submission $submission):SubmissionResource
     {
