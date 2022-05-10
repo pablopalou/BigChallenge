@@ -6,6 +6,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\DoctorInformation;
 use App\Models\PatientInformation;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,7 @@ class RegisterController extends Controller
     public function __invoke(RegisterRequest $request): JsonResponse
     {
         $arguments = $request->validated();
+        $arguments['birth'] = Carbon::parse($arguments['birth']);
         $user = User::create($this->getUserPayload($arguments));
 
         // here we have to create the information of patient (and doctor if it is a doctor)
