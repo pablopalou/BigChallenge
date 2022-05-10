@@ -7,10 +7,10 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResendVerificationEmailController;
 use App\Http\Controllers\UpdateDoctorInformationController;
 use App\Http\Controllers\UpdatePatientInformationController;
+use App\Http\Controllers\UpdateSymptomsController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UpdateSymptomsController;
 
 /*
 |--------------------------------------------------------------------------
