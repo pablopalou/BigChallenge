@@ -10,9 +10,9 @@ class Submission extends Model
 {
     use HasFactory;
 
-    const STATUS_PENDING = 'Pending';
-    const STATUS_IN_PROGRESS = 'In progress';
-    const STATUS_READY = 'Ready';
+    const STATUS_PENDING = 'pending';
+    const STATUS_IN_PROGRESS = 'in progress';
+    const STATUS_READY = 'ready';
 
     // I think I don't need to specify the third parameter as it is called id
     // Should I relate this submission to PatientInformation or User?
