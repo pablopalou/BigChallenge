@@ -11,11 +11,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class UpdateSubmissionTest extends TestCase
+class UpdateSymptomsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_update_submission_successfully_by_patient()
+    public function test_update_symptoms_successfully_by_patient()
     {
         (new RolesSeeder())->run();
         $user = User::factory()->create();
@@ -34,11 +34,11 @@ class UpdateSubmissionTest extends TestCase
         $response->assertSuccessful();
         $this->assertDatabaseHas('submissions', $newSubmissionInformation);
         $response->assertJson([
-            'message' => 'Submission updated successfully',
+            'message' => 'Symptoms updated successfully',
         ]);
     }
 
-    public function test_update_submission_successfully_by_doctor()
+    public function test_update_symptoms_successfully_by_doctor()
     {
         (new RolesSeeder())->run();
         $user = User::factory()->create();
@@ -58,11 +58,11 @@ class UpdateSubmissionTest extends TestCase
         $response->assertSuccessful();
         $this->assertDatabaseHas('submissions', $newSubmissionInformation);
         $response->assertJson([
-            'message' => 'Submission updated successfully',
+            'message' => 'Symptoms updated successfully',
         ]);
     }
 
-    public function test_update_other_submission_by_patient()
+    public function test_update_other_symptoms_by_patient()
     {
         (new RolesSeeder())->run();
         $user = User::factory()->create();
@@ -85,7 +85,7 @@ class UpdateSubmissionTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_update_other_submission_by_doctor()
+    public function test_update_other_symptoms_by_doctor()
     {
         (new RolesSeeder())->run();
         $user = User::factory()->create();
@@ -109,7 +109,7 @@ class UpdateSubmissionTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_update_submission_by_guest()
+    public function test_update_symptoms_by_guest()
     {
         (new RolesSeeder())->run();
         $user = User::factory()->create();
@@ -129,7 +129,7 @@ class UpdateSubmissionTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_update_submission_wrong_data()
+    public function test_update_symptoms_wrong_data()
     {
         (new RolesSeeder())->run();
         $user = User::factory()->create();
