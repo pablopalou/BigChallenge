@@ -68,8 +68,8 @@ class GetPatientInformationTest extends TestCase
         (new RolesSeeder())->run();
         $user = User::factory()->create();
         $user->assignRole('doctor');
-        $patientInformation = PatientInformation::factory()->create(['user_id' => $user->id]);
-        $doctorInformation = DoctorInformation::factory()->create(['user_id' => $user->id]);
+        PatientInformation::factory()->create(['user_id' => $user->id]);
+        DoctorInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
 
         // create submission and assign to other doctor and try to see THAT patient that is NOT MY patient
