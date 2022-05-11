@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\DoctorInformation;
 use App\Models\Submission;
 use Illuminate\Database\Seeder;
 

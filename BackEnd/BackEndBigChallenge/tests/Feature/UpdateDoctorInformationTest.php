@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\DoctorInformation;
-use App\Models\PatientInformation;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
