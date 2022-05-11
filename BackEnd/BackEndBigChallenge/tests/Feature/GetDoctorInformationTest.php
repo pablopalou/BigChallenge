@@ -18,9 +18,9 @@ class GetDoctorInformationTest extends TestCase
     public function test_doctor_can_get_his_her_information()
     {
         (new RolesSeeder())->run();
-        $user = User::factory()->create();
+        $user = User::factory()->has(DoctorInformation::factory())->create();
         $user->assignRole('doctor');
-        $doctorInformation = DoctorInformation::factory()->create(['user_id' => $user->id]);
+        $doctorInformation = $user->doctorInformation;
         PatientInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
         $response = $this->getJson('/api/getDoctorInformation/1');

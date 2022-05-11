@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\DoctorInformation;
+use App\Models\PatientInformation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -11,17 +12,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DoctorInformationFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    /** @var \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User> */
     public function definition()
     {
+        $user = User::factory()->create();
+        $user->patientInformation = PatientInformation::factory()->create(['user_id' => $user->id]);
+
         return [
             'grade' => $this->faker->numberBetween(1, 5),
             'speciality' => $this->faker->randomElement(DoctorInformation::specialities),
-            'user_id' => User::factory(),
+            'user_id' => $user->id,
         ];
     }
 }

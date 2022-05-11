@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\DoctorInformation;
-use App\Models\PatientInformation;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,7 +18,6 @@ class UpdateDoctorInformationTest extends TestCase
         (new RolesSeeder())->run();
         $user = User::factory()->create();
         $user->assignRole('doctor');
-        PatientInformation::factory()->create(['user_id' => $user->id]);
         DoctorInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
         $newDoctorInformation = [
@@ -39,7 +37,6 @@ class UpdateDoctorInformationTest extends TestCase
         (new RolesSeeder())->run();
         $user = User::factory()->create();
         $user->assignRole('doctor');
-        PatientInformation::factory()->create(['user_id' => $user->id]);
         DoctorInformation::factory()->create(['user_id' => $user->id]);
         $newDoctorInformation = [
             'grade' => '2',
@@ -54,7 +51,7 @@ class UpdateDoctorInformationTest extends TestCase
         (new RolesSeeder())->run();
         $user = User::factory()->create();
         $user->assignRole('patient');
-        PatientInformation::factory()->create(['user_id' => $user->id]);
+        DoctorInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
         $newDoctorInformation = [
             'grade' => '2',
@@ -72,7 +69,6 @@ class UpdateDoctorInformationTest extends TestCase
         (new RolesSeeder())->run();
         $user = User::factory()->create();
         $user->assignRole('doctor');
-        PatientInformation::factory()->create(['user_id' => $user->id]);
         DoctorInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
         $response = $this->postJson('/api/updateDoctorInformation', $data);
