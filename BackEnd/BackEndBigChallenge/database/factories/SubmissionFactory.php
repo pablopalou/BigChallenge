@@ -36,7 +36,6 @@ class SubmissionFactory extends Factory
         return $this->afterCreating(function (Submission $submission) {
             if ($submission->state !== Submission::STATUS_PENDING) {
                 $doctor = DoctorInformation::factory()->create();
-                PatientInformation::factory()->create(['user_id' => $doctor->user_id]);
                 $submission->doctor_id = $doctor->user->id;
 
                 // assign prescription only if status is ready
