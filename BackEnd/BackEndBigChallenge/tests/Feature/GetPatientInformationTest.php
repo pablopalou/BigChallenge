@@ -18,9 +18,9 @@ class GetPatientInformationTest extends TestCase
     public function test_patient_can_see_his_her_information()
     {
         (new RolesSeeder())->run();
-        $user = User::factory()->create();
+        $user = User::factory()->has(PatientInformation::factory())->create();
         $user->assignRole('patient');
-        $patientInformation = PatientInformation::factory()->create(['user_id' => $user->id]);
+        $patientInformation = $user->patientInformation;
         Sanctum::actingAs($user);
         $response = $this->getJson('/api/getPatientInformation/1');
         $response->assertSuccessful();
@@ -66,10 +66,8 @@ class GetPatientInformationTest extends TestCase
     public function test_doctor_can_NOT_others_patient_information()
     {
         (new RolesSeeder())->run();
-        $user = User::factory()->create();
+        $user = User::factory()->has(DoctorInformation::factory())->create();
         $user->assignRole('doctor');
-        PatientInformation::factory()->create(['user_id' => $user->id]);
-        DoctorInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
 
         // create submission and assign to other doctor and try to see THAT patient that is NOT MY patient
