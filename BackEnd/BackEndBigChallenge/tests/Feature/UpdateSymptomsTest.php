@@ -42,7 +42,6 @@ class UpdateSymptomsTest extends TestCase
     {
         (new RolesSeeder())->run();
         $user = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $user->id]);
         DoctorInformation::factory()->create(['user_id' => $user->id]);
         $user->assignRole('doctor');
         Sanctum::actingAs($user);
@@ -89,7 +88,6 @@ class UpdateSymptomsTest extends TestCase
     {
         (new RolesSeeder())->run();
         $user = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $user->id]);
         DoctorInformation::factory()->create(['user_id' => $user->id]);
         $user->assignRole('doctor');
 
@@ -113,7 +111,6 @@ class UpdateSymptomsTest extends TestCase
     {
         (new RolesSeeder())->run();
         $user = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $user->id]);
         DoctorInformation::factory()->create(['user_id' => $user->id]);
         $user->assignRole('doctor');
 
