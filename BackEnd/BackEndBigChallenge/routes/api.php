@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CreateSubmissionController;
 use App\Http\Controllers\GetDoctorInformationController;
+use App\Http\Controllers\GetPatientInformationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
@@ -51,3 +52,5 @@ Route::post('/updateDoctorInformation', UpdateDoctorInformationController::class
 Route::put('/submission/{submission}/patient', UpdateSymptomsController::class)->middleware('auth:sanctum');
 
 Route::get('/getDoctorInformation/{doctorInformation}', GetDoctorInformationController::class)->middleware('auth:sanctum');
+
+Route::get('/getPatientInformation/{patientInformation}', GetPatientInformationController::class)->middleware('auth:sanctum');
