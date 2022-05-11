@@ -29,7 +29,6 @@ class CreateSubmissionRequest extends FormRequest
             'state' => ['required', Rule::in([Submission::STATUS_PENDING, Submission::STATUS_IN_PROGRESS, Submission::STATUS_READY])],
             'symptoms' => ['required'],
             'prescriptions' => ['nullable', 'mimes:txt'],
-            'patient_id' => ['required', Rule::exists('patient_information', 'user_id')],
             'doctor_id' => ['nullable', Rule::exists('doctor_information', 'user_id')],
         ];
     }

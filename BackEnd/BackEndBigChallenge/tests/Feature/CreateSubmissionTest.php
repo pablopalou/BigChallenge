@@ -23,7 +23,6 @@ class CreateSubmissionTest extends TestCase
         $submissionData = [
             'state' => Submission::STATUS_PENDING,
             'symptoms' => 'I have temperature since yeasterday and sore throat',
-            'patient_id' => $patient->user->id,
         ];
         $response = $this->postJson('/api/createSubmission', $submissionData);
         $response->assertSuccessful();
@@ -39,7 +38,6 @@ class CreateSubmissionTest extends TestCase
         $submissionData = [
             'state' => Submission::STATUS_PENDING,
             'symptoms' => 'I have temperature since yeasterday and sore throat',
-            'patient_id' => $patient->user->id,
         ];
         $response = $this->postJson('/api/createSubmission', $submissionData);
         $response->assertStatus(401);
