@@ -20,13 +20,13 @@ class CreateSubmissionTest extends TestCase
         $patient = PatientInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
 
-        $submissionData = [
-            'state' => Submission::STATUS_PENDING,
+        $response = $this->postJson('/api/createSubmission', [
             'symptoms' => 'I have temperature since yeasterday and sore throat',
-        ];
-        $response = $this->postJson('/api/createSubmission', $submissionData);
+        ]);
         $response->assertSuccessful();
-        $this->assertDatabaseHas('submissions', $submissionData);
+        $this->assertDatabaseHas('submissions', [
+            'symptoms' => 'I have temperature since yeasterday and sore throat',
+        ]);
         $response->assertJson(['message' => 'Submission created successfully']);
     }
 
@@ -35,12 +35,12 @@ class CreateSubmissionTest extends TestCase
         $user = User::factory()->create();
         $patient = PatientInformation::factory()->create(['user_id' => $user->id]);
 
-        $submissionData = [
-            'state' => Submission::STATUS_PENDING,
+        $response = $this->postJson('/api/createSubmission', [
             'symptoms' => 'I have temperature since yeasterday and sore throat',
-        ];
-        $response = $this->postJson('/api/createSubmission', $submissionData);
+        ]);
         $response->assertStatus(401);
-        $this->assertDatabaseMissing('submissions', $submissionData);
+        $this->assertDatabaseMissing('submissions', [
+            'symptoms' => 'I have temperature since yeasterday and sore throat',
+        ]);
     }
 }

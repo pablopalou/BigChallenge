@@ -13,6 +13,7 @@ class CreateSubmissionController extends Controller
     {
         $arguments = $request->validated();
         $arguments['patient_id'] = Auth::user()->id;
+        $arguments['state'] = Submission::STATUS_PENDING;
         $submission = Submission::create($arguments);
 
         return (new SubmissionResource($submission))->additional(['message' => 'Submission created successfully']);
