@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\PatientInformation;
-use App\Models\Submission;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
