@@ -8,13 +8,13 @@ use App\Models\Submission;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class GetPatientInformationTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_patient_can_see_his_her_information()
     {
         (new RolesSeeder())->run();
@@ -71,7 +71,7 @@ class GetPatientInformationTest extends TestCase
         $patientInformation = PatientInformation::factory()->create(['user_id' => $user->id]);
         $doctorInformation = DoctorInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
-        
+
         // create submission and assign to other doctor and try to see THAT patient that is NOT MY patient
         Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
 

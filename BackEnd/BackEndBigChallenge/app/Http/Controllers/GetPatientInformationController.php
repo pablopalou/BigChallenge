@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GetPatientInformationRequest;
 use App\Http\Resources\PatientInformationResource;
 use App\Models\PatientInformation;
-use Illuminate\Http\Request;
 
 class GetPatientInformationController extends Controller
 {
