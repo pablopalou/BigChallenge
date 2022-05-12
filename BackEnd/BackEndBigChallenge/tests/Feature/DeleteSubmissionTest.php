@@ -7,13 +7,13 @@ use App\Models\Submission;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class DeleteSubmissionTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_patient_delete_his_her_submission_successfully()
     {
         (new RolesSeeder)->run();
@@ -69,7 +69,7 @@ class DeleteSubmissionTest extends TestCase
         $userPatient = $submission->patient;
         $userPatient->assignRole('patient');
         Sanctum::actingAs($userPatient);
-        $response = $this->deleteJson("/api/submission/2");
+        $response = $this->deleteJson('/api/submission/2');
         $response->assertStatus(404);
     }
 }

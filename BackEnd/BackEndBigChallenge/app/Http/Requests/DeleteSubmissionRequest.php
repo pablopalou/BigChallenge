@@ -10,6 +10,7 @@ class DeleteSubmissionRequest extends FormRequest
     public function authorize(): bool
     {
         $submission = $this->route('submission');
+
         return $submission->patient_id == Auth::user()->id;
     }
 
