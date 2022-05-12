@@ -13,12 +13,6 @@ class Submission extends Model
     const STATUS_PENDING = 'pending';
     const STATUS_IN_PROGRESS = 'in progress';
     const STATUS_READY = 'ready';
-
-    // I think I don't need to specify the third parameter as it is called id
-    // Should I relate this submission to PatientInformation or User?
-
-    // if i choose to put user, i must put user_id as the second parameter and in the third, i
-    // have to specify the column of the Submission i am relating to.
     public function patient(): BelongsTo
     {
         return $this->belongsTo(User::class, 'patient_id');
@@ -27,5 +21,12 @@ class Submission extends Model
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'doctor_id');
+    }
+
+    public function scopeFilter($query, array $filters){
+        $query->when($filters['state'] ?? false, fn ($query, $state) =>
+            $query
+                ->where('state', $state)
+        );
     }
 }
