@@ -59,4 +59,4 @@ Route::get('/getPatientInformation/{patientInformation}', GetPatientInformationC
 
 Route::get('/submission/{submission}', GetSubmissionController::class)->middleware('auth:sanctum');
 
-Route::post('/submission/{submission}/take', TakeSubmissionController::class)->middleware('auth:sanctum','role:doctor');
+Route::post('/submission/{submission}/take', TakeSubmissionController::class)->middleware('auth:sanctum', 'role:doctor');

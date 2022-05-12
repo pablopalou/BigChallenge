@@ -8,13 +8,13 @@ use App\Models\Submission;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class TakeSubmissionTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_doctor_can_take_pending_submission()
     {
         (new RolesSeeder)->run();
@@ -40,6 +40,7 @@ class TakeSubmissionTest extends TestCase
         $response = $this->postJson('/api/submission/1/take');
         $response->assertStatus(403);
     }
+
     public function test_doctor_can_not_take_ready_submission()
     {
         (new RolesSeeder)->run();
@@ -50,6 +51,7 @@ class TakeSubmissionTest extends TestCase
         $response = $this->postJson('/api/submission/1/take');
         $response->assertStatus(403);
     }
+
     public function test_patient_can_not_take_pending_submission()
     {
         (new RolesSeeder)->run();

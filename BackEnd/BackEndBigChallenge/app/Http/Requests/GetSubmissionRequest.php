@@ -12,7 +12,8 @@ class GetSubmissionRequest extends FormRequest
     {
         /** @var Submission $submission */
         $submission = $this->route('submission');
-        return (Auth::user()->id == $submission->patient_id || ($submission->state != Submission::STATUS_PENDING && $submission->doctor_id == Auth::user()->id));
+
+        return Auth::user()->id == $submission->patient_id || ($submission->state != Submission::STATUS_PENDING && $submission->doctor_id == Auth::user()->id);
     }
 
     public function rules(): array
