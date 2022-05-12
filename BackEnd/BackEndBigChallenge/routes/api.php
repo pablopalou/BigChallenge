@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CreateSubmissionController;
+use App\Http\Controllers\DeleteSubmissionController;
 use App\Http\Controllers\GetDoctorInformationController;
 use App\Http\Controllers\GetPatientInformationController;
 use App\Http\Controllers\GetSubmissionController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResendVerificationEmailController;
+use App\Http\Controllers\TakeSubmissionController;
 use App\Http\Controllers\UpdateDoctorInformationController;
 use App\Http\Controllers\UpdatePatientInformationController;
 use App\Http\Controllers\UpdateSymptomsController;
@@ -57,3 +59,7 @@ Route::get('/getDoctorInformation/{doctorInformation}', GetDoctorInformationCont
 Route::get('/getPatientInformation/{patientInformation}', GetPatientInformationController::class)->middleware('auth:sanctum');
 
 Route::get('/submission/{submission}', GetSubmissionController::class)->middleware('auth:sanctum');
+
+Route::post('/submission/{submission}/take', TakeSubmissionController::class)->middleware('auth:sanctum', 'role:doctor');
+
+Route::delete('/submission/{submission}', DeleteSubmissionController::class)->middleware('auth:sanctum', 'role:patient');
