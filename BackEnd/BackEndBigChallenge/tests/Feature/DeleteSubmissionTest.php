@@ -36,9 +36,6 @@ class DeleteSubmissionTest extends TestCase
         $patient = User::factory()->has(PatientInformation::factory())->create();
         $patient->assignRole('patient');
         Sanctum::actingAs($patient);
-        // $doctor = User::factory()->has(DoctorInformation::factory())->create();
-        // $doctor->assignRole('doctor');
-        // Sanctum::actingAs($doctor);
         $submission = Submission::factory()->create();
         $response = $this->deleteJson("/api/submission/{$submission->id}");
         $response->assertStatus(403);
