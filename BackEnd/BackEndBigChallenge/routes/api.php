@@ -3,6 +3,7 @@
 use App\Http\Controllers\CreateSubmissionController;
 use App\Http\Controllers\GetDoctorInformationController;
 use App\Http\Controllers\GetPatientInformationController;
+use App\Http\Controllers\GetSubmissionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
@@ -54,3 +55,5 @@ Route::put('/submission/{submission}/patient', UpdateSymptomsController::class)-
 Route::get('/getDoctorInformation/{doctorInformation}', GetDoctorInformationController::class)->middleware('auth:sanctum');
 
 Route::get('/getPatientInformation/{patientInformation}', GetPatientInformationController::class)->middleware('auth:sanctum');
+
+Route::get('/submission/{submission}', GetSubmissionController::class)->middleware('auth:sanctum');
