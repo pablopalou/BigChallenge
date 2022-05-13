@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\DoctorInformation;
 use App\Models\PatientInformation;
 use App\Models\Submission;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,11 +27,6 @@ class SubmissionFactory extends Factory
         ];
     }
 
-    /**
-     * Configure the model factory.
-     *
-     * @return $this
-     */
     public function configure()
     {
         return $this->afterCreating(function (Submission $submission) {
@@ -44,6 +40,42 @@ class SubmissionFactory extends Factory
                 }
                 $submission->save();
             }
+        });
+    }
+
+    public function pending()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'state' => Submission::STATUS_PENDING,
+            ];
+        })->afterCreating(function (Submission $submission, User $user){
+            $submission->save();
+        });
+    }
+
+    public function inProgress(User $user)
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'state' => Submission::STATUS_IN_PROGRESS,
+            ];
+        })->afterCreating(function (Submission $submission) use ($user){
+            $submission->doctor_id = $user->id;
+            $submission->save();
+        });
+    }
+
+    public function ready(User $user)
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'state' => Submission::STATUS_READY,
+            ];
+        })->afterCreating(function (Submission $submission) use ($user){
+            $submission->doctor_id = $user->id;
+            $submission->prescriptions = $this->faker->paragraph;
+            $submission->save();
         });
     }
 }

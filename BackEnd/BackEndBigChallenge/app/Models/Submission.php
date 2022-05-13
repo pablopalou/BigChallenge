@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
+
+/** @method static Builder patientListSubmissions() */
+/** @method static Builder doctorListSubmissions() */
 
 class Submission extends Model
 {
@@ -29,4 +34,13 @@ class Submission extends Model
                 ->where('state', $state)
         );
     }
+
+    public static function scopePatientListSubmissions($query){
+        return $query->where('patient_id', Auth::user()->id);
+    }
+
+    public static function scopeDoctorListSubmissions($query){
+        return $query->where('doctor_id', Auth::user()->id);
+    }
+
 }
