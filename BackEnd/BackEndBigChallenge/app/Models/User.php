@@ -54,7 +54,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'birth',
     ];
 
-
     // HasOne relation can be null, it's not required to have relation row in database. Just check it while you get it.
     // A doctor can also be a patient, so every time a doctor register, we will register as a patient too.
     public function patientInformation():HasOne

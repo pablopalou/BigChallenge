@@ -28,6 +28,7 @@ class SubmissionFactory extends Factory
             'state' => Submission::STATUS_PENDING,
         ];
     }
+
     public function inProgress()
     {
         return $this->state(function (array $attributes) {
@@ -37,6 +38,7 @@ class SubmissionFactory extends Factory
             ];
         });
     }
+
     public function ready()
     {
         return $this->state(function (array $attributes) {

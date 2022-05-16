@@ -50,7 +50,7 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             try {
                 Role::create([
-                    'name' => 'patient'
+                    'name' => 'patient',
                 ]);
             } catch (\Exception $exception) {
                 // Do nothing
@@ -65,14 +65,14 @@ class UserFactory extends Factory
     }
 
     /**
-    * @return static
-    */
+     * @return static
+     */
     public function doctor()
     {
         return $this->afterCreating(function (User $user) {
             try {
                 Role::create([
-                    'name' => 'doctor'
+                    'name' => 'doctor',
                 ]);
             } catch (\Exception $exception) {
                 // Do nothing

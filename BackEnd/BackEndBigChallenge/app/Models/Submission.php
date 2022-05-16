@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 /** @method static Builder patientListSubmissions() */
 /** @method static Builder doctorListSubmissions() */
-
 class Submission extends Model
 {
     use HasFactory;
@@ -18,6 +17,7 @@ class Submission extends Model
     const STATUS_PENDING = 'pending';
     const STATUS_IN_PROGRESS = 'in progress';
     const STATUS_READY = 'ready';
+
     public function patient(): BelongsTo
     {
         return $this->belongsTo(User::class, 'patient_id');
@@ -28,19 +28,22 @@ class Submission extends Model
         return $this->belongsTo(User::class, 'doctor_id');
     }
 
-    public function scopeFilter($query, array $filters){
-        $query->when($filters['state'] ?? false, fn ($query, $state) =>
-            $query
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when(
+            $filters['state'] ?? false,
+            fn ($query, $state) => $query
                 ->where('state', $state)
         );
     }
 
-    public static function scopePatientListSubmissions($query){
+    public static function scopePatientListSubmissions($query)
+    {
         return $query->where('patient_id', Auth::user()->id);
     }
 
-    public static function scopeDoctorListSubmissions($query){
+    public static function scopeDoctorListSubmissions($query)
+    {
         return $query->where('doctor_id', Auth::user()->id);
     }
-
 }
