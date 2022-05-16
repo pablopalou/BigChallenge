@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\PatientInformation;
+use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
@@ -15,6 +16,16 @@ class CreateSubmissionTest extends TestCase
     //Remember that a doctor can also be a patient
     public function test_submission_created_by_patient_successfully()
     {
+        $user = User::factory()
+            ->doctor()
+            ->patient()
+            ->has(Submission::factory()->count(3), 'submissionsMade')
+            ->has(Submission::factory()->inProgress()->count(3), 'submissionsTaken')
+            ->create();
+
+        dd($user->submissionsTaken);
+
+
         $user = User::factory()->create();
         $patient = PatientInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);

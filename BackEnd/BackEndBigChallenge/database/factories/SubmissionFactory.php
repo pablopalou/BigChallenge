@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\DoctorInformation;
 use App\Models\PatientInformation;
 use App\Models\Submission;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,33 +18,32 @@ class SubmissionFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'symptoms' => $this->faker->paragraph,
-            'patient_id' => PatientInformation::factory()->create()->user,
-            'state' => $this->faker->randomElement([Submission::STATUS_PENDING, Submission::STATUS_IN_PROGRESS, Submission::STATUS_READY]),
+            'patient_id' => User::factory()->patient(),
+            'state' => Submission::STATUS_PENDING,
         ];
     }
 
-    /**
-     * Configure the model factory.
-     *
-     * @return $this
-     */
-    public function configure()
+    public function inProgress()
     {
-        return $this->afterCreating(function (Submission $submission) {
-            if ($submission->state !== Submission::STATUS_PENDING) {
-                $doctor = DoctorInformation::factory()->create();
-                $submission->doctor_id = $doctor->user->id;
+        return $this->state(function ($attributes) {
+            return [
+                'doctor_id' => User::factory()->doctor(),
+                'state' => Submission::STATUS_IN_PROGRESS,
+            ];
+        });
+    }
 
-                // assign prescription only if status is ready
-                if ($submission->state === Submission::STATUS_READY) {
-                    $submission->prescriptions = $this->faker->paragraph;
-                }
-                $submission->save();
-            }
+    public function ready()
+    {
+        return $this->state(function ($attributes) {
+            return [
+                'doctor_id' => User::factory()->doctor(),
+                'state' => Submission::STATUS_READY,
+            ];
         });
     }
 }

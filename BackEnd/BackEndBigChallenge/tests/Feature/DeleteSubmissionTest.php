@@ -16,11 +16,9 @@ class DeleteSubmissionTest extends TestCase
 
     public function test_patient_delete_his_her_submission_successfully()
     {
-        (new RolesSeeder)->run();
+        /** @var Submission $submission */
         $submission = Submission::factory()->create();
-        $userPatient = $submission->patient;
-        $userPatient->assignRole('patient');
-        Sanctum::actingAs($userPatient);
+        Sanctum::actingAs($submission->patient);
 
         $response = $this->deleteJson("/api/submission/{$submission->id}");
         $response->assertStatus(200);
