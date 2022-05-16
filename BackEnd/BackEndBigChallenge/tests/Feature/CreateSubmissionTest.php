@@ -25,7 +25,6 @@ class CreateSubmissionTest extends TestCase
 
         dd($user->submissionsTaken);
 
-
         $user = User::factory()->create();
         $patient = PatientInformation::factory()->create(['user_id' => $user->id]);
         Sanctum::actingAs($user);
