@@ -72,12 +72,14 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             try {
                 Role::create([
-                    'name' => 'patient'
+                    'name' => 'doctor'
                 ]);
             } catch (\Exception $exception) {
-                  // Do nothing
+                // Do nothing
             }
-            $user->assignRole('patient');
+
+            $user->assignRole('doctor');
+
             DoctorInformation::factory()->create([
                 'user_id' => $user->id,
             ]);

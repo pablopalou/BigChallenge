@@ -17,43 +17,36 @@ class GetPatientInformationTest extends TestCase
 
     public function test_patient_can_see_his_her_information()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->has(PatientInformation::factory())->create();
-        $user->assignRole('patient');
-        $patientInformation = $user->patientInformation;
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
         $response = $this->getJson('/api/getPatientInformation/1');
         $response->assertSuccessful();
         $response->assertJson(['message' => 'Received Patient Information successfully',
                                 'name' => $user->name,
                                 'email' => $user->email,
-                                'data' =>  ['height' => $patientInformation->height,
-                                            'birth' => $patientInformation->birth,
-                                            'weight' => $patientInformation->weight,
-                                            'gender' => $patientInformation->gender,
-                                            'diseases' => $patientInformation->diseases,
-                                            'previous_treatments' => $patientInformation->previous_treatments, ],
+                                'data' =>  ['height' => $user->patientInformation->height,
+                                            'birth' => $user->patientInformation->birth,
+                                            'weight' => $user->patientInformation->weight,
+                                            'gender' => $user->patientInformation->gender,
+                                            'diseases' => $user->patientInformation->diseases,
+                                            'previous_treatments' => $user->patientInformation->previous_treatments, ],
                                 ]);
     }
 
     public function test_doctor_can_see_his_her_patients_information()
     {
-        (new RolesSeeder())->run();
-
         // create two submissions with different patients and try to see that patients
-        Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
-        $submission2 = Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
+        Submission::factory()->inProgress()->create();
+        $submission2 = Submission::factory()->inProgress()->create();
 
-        $userPatient = $submission2->patient;
-        $patientInformation = $userPatient->patientInformation;
-        $submission2->doctor->assignRole('doctor');
+        $patientInformation = $submission2->patient->patientInformation;
         Sanctum::actingAs($submission2->doctor);
 
         $response = $this->getJson('/api/getPatientInformation/3');
         $response->assertSuccessful();
         $response->assertJson(['message' => 'Received Patient Information successfully',
-                                'name' => $userPatient->name,
-                                'email' => $userPatient->email,
+                                'name' => $submission2->patient->name,
+                                'email' => $submission2->patient->email,
                                 'data' =>  ['height' => $patientInformation->height,
                                             'birth' => $patientInformation->birth,
                                             'weight' => $patientInformation->weight,
@@ -65,14 +58,11 @@ class GetPatientInformationTest extends TestCase
 
     public function test_doctor_can_NOT_others_patient_information()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->has(DoctorInformation::factory())->create();
-        $user->assignRole('doctor');
+        $user = User::factory()->doctor()->patient()->create();
         Sanctum::actingAs($user);
 
         // create submission and assign to other doctor and try to see THAT patient that is NOT MY patient
-        Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
-
+        Submission::factory()->inProgress()->create();
         $response = $this->getJson('/api/getPatientInformation/2');
         $response->assertStatus(403);
     }

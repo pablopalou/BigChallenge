@@ -17,33 +17,23 @@ class GetDoctorInformationTest extends TestCase
 
     public function test_doctor_can_get_his_her_information()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->has(DoctorInformation::factory())->create();
-        $user->assignRole('doctor');
-        $doctorInformation = $user->doctorInformation;
-        PatientInformation::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->doctor()->patient()->create();
         Sanctum::actingAs($user);
         $response = $this->getJson('/api/getDoctorInformation/1');
         $response->assertSuccessful();
         $response->assertJson(['message' => 'Received Doctor Information successfully',
-                                'data' =>  ['speciality' => $doctorInformation->speciality,
-                                            'grade' => $doctorInformation->grade, ],
+                                'data' =>  ['speciality' => $user->doctorInformation->speciality,
+                                            'grade' => $user->doctorInformation->grade, ],
                                 ]);
     }
 
     public function test_patient_can_get_his_her_doctor_information()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        $user->assignRole('patient');
-        PatientInformation::factory()->create(['user_id' => $user->id]);
-
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
 
-        $submission1 = Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS,
-                                                        'patient_id' => $user->id,
-                                                        ]);
-        Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
+        $submission1 = Submission::factory()->inProgress()->create(['patient_id' => $user->id,]);
+        Submission::factory()->inProgress()->create();
 
         $response = $this->getJson('/api/getDoctorInformation/1');
         $response->assertSuccessful();
@@ -55,15 +45,9 @@ class GetDoctorInformationTest extends TestCase
 
     public function test_patient_not_authorized_to_get_other_doctor_information()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        $user->assignRole('patient');
-        PatientInformation::factory()->create(['user_id' => $user->id]);
-
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
-
-        Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
-
+        Submission::factory()->inProgress()->create();
         $response = $this->getJson('/api/getDoctorInformation/1');
         $response->assertStatus(403);
     }

@@ -16,11 +16,9 @@ class DeleteSubmissionTest extends TestCase
 
     public function test_patient_delete_his_her_submission_successfully()
     {
-        (new RolesSeeder)->run();
+        /** @var Submission $submission */
         $submission = Submission::factory()->create();
-        $userPatient = $submission->patient;
-        $userPatient->assignRole('patient');
-        Sanctum::actingAs($userPatient);
+        Sanctum::actingAs($submission->patient);
 
         $response = $this->deleteJson("/api/submission/{$submission->id}");
         $response->assertStatus(200);
@@ -32,9 +30,7 @@ class DeleteSubmissionTest extends TestCase
 
     public function test_patient_can_not_delete_other_submission()
     {
-        (new RolesSeeder)->run();
-        $patient = User::factory()->has(PatientInformation::factory())->create();
-        $patient->assignRole('patient');
+        $patient = User::factory()->patient()->create();
         Sanctum::actingAs($patient);
         $submission = Submission::factory()->create();
         $response = $this->deleteJson("/api/submission/{$submission->id}");
@@ -43,11 +39,8 @@ class DeleteSubmissionTest extends TestCase
 
     public function test_doctor_can_not_delete_submission()
     {
-        (new RolesSeeder)->run();
-        $submission = Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
-        $userDoctor = $submission->doctor;
-        $userDoctor->assignRole('doctor');
-        Sanctum::actingAs($userDoctor);
+        $submission = Submission::factory()->inProgress()->create();
+        Sanctum::actingAs($submission->doctor);
         $response = $this->deleteJson("/api/submission/{$submission->id}");
         $response->assertStatus(403);
     }
@@ -61,11 +54,8 @@ class DeleteSubmissionTest extends TestCase
 
     public function test_wrong_submission_id()
     {
-        (new RolesSeeder)->run();
         $submission = Submission::factory()->create();
-        $userPatient = $submission->patient;
-        $userPatient->assignRole('patient');
-        Sanctum::actingAs($userPatient);
+        Sanctum::actingAs($submission->patient);
         $response = $this->deleteJson('/api/submission/2');
         $response->assertStatus(404);
     }

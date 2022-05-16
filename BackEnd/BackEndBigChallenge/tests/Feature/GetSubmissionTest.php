@@ -17,12 +17,9 @@ class GetSubmissionTest extends TestCase
 
     public function test_get_submission_being_doctor()
     {
-        (new RolesSeeder())->run();
-        $submission = Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
+        $submission = Submission::factory()->inProgress()->create();
         $userDoctor = $submission->doctor;
-        $userDoctor->assignRole('doctor');
         Sanctum::actingAs($userDoctor);
-        // dd($submission);
         $response = $this->getJson('/api/submission/1');
         $response->assertSuccessful();
         $response->assertJson(['message' => 'Received Submission Successfully',
@@ -37,11 +34,8 @@ class GetSubmissionTest extends TestCase
 
     public function test_get_submission_being_patient()
     {
-        (new RolesSeeder())->run();
-        $submission = Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
-        $userPatient = $submission->patient;
-        $userPatient->assignRole('patient');
-        Sanctum::actingAs($userPatient);
+        $submission = Submission::factory()->inProgress()->create();
+        Sanctum::actingAs($submission->patient);
         $response = $this->getJson('/api/submission/1');
         $response->assertSuccessful();
         $response->assertJson(['message' => 'Received Submission Successfully',
@@ -56,10 +50,8 @@ class GetSubmissionTest extends TestCase
 
     public function test_get_submission_not_authorized_patient()
     {
-        (new RolesSeeder())->run();
-        Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
-        $userPatient = User::factory()->has(PatientInformation::factory())->create();
-        $userPatient->assignRole('patient');
+        Submission::factory()->inProgress()->create();
+        $userPatient = User::factory()->patient()->create();
         Sanctum::actingAs($userPatient);
         $response = $this->getJson('/api/submission/1');
         $response->assertStatus(403);
@@ -67,10 +59,8 @@ class GetSubmissionTest extends TestCase
 
     public function test_get_submission_not_authorized_doctor()
     {
-        (new RolesSeeder())->run();
-        Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
-        $userDoctor = User::factory()->has(DoctorInformation::factory())->create();
-        $userDoctor->assignRole('doctor');
+        Submission::factory()->inProgress()->create();
+        $userDoctor = User::factory()->doctor()->patient()->create();
         Sanctum::actingAs($userDoctor);
         $response = $this->getJson('/api/submission/1');
         $response->assertStatus(403);

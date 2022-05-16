@@ -17,10 +17,7 @@ class UpdateSymptomsTest extends TestCase
 
     public function test_update_symptoms_successfully_by_patient()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $user->id]);
-        $user->assignRole('patient');
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
         Submission::factory()->create([
             'patient_id' => $user->id,
@@ -40,14 +37,10 @@ class UpdateSymptomsTest extends TestCase
 
     public function test_update_symptoms_successfully_by_doctor()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        DoctorInformation::factory()->create(['user_id' => $user->id]);
-        $user->assignRole('doctor');
+        $user = User::factory()->doctor()->patient()->create();
         Sanctum::actingAs($user);
         Submission::factory()->create([
             'patient_id' => $user->id,
-            'state' => Submission::STATUS_PENDING,
         ]);
 
         $newSubmissionInformation = [
@@ -63,18 +56,13 @@ class UpdateSymptomsTest extends TestCase
 
     public function test_update_other_symptoms_by_patient()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $user->id]);
-        $user->assignRole('patient');
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
 
-        $userWithSubmission = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $userWithSubmission->id]);
+        $userWithSubmission = User::factory()->patient()->create();
 
         Submission::factory()->create([
             'patient_id' => $userWithSubmission->id,
-            'state' => Submission::STATUS_PENDING,
         ]);
 
         $newSubmissionInformation = [
@@ -86,10 +74,7 @@ class UpdateSymptomsTest extends TestCase
 
     public function test_update_other_symptoms_by_doctor()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        DoctorInformation::factory()->create(['user_id' => $user->id]);
-        $user->assignRole('doctor');
+        $user = User::factory()->doctor()->patient()->create();
 
         $userWithSubmission = User::factory()->create();
         PatientInformation::factory()->create(['user_id' => $userWithSubmission->id]);
@@ -97,7 +82,6 @@ class UpdateSymptomsTest extends TestCase
         Sanctum::actingAs($user);
         Submission::factory()->create([
             'patient_id' => $userWithSubmission->id,
-            'state' => Submission::STATUS_PENDING,
         ]);
 
         $newSubmissionInformation = [
@@ -109,14 +93,10 @@ class UpdateSymptomsTest extends TestCase
 
     public function test_update_symptoms_by_guest()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        DoctorInformation::factory()->create(['user_id' => $user->id]);
-        $user->assignRole('doctor');
+        $user = User::factory()->doctor()->patient()->create();
 
         Submission::factory()->create([
             'patient_id' => $user->id,
-            'state' => Submission::STATUS_PENDING,
         ]);
 
         $newSubmissionInformation = [
@@ -128,14 +108,10 @@ class UpdateSymptomsTest extends TestCase
 
     public function test_update_symptoms_wrong_data()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $user->id]);
-        $user->assignRole('patient');
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
         Submission::factory()->create([
             'patient_id' => $user->id,
-            'state' => Submission::STATUS_PENDING,
         ]);
 
         $newSubmissionInformation = [

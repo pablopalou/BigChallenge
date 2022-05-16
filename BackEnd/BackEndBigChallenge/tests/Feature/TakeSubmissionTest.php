@@ -17,11 +17,9 @@ class TakeSubmissionTest extends TestCase
 
     public function test_doctor_can_take_pending_submission()
     {
-        (new RolesSeeder)->run();
-        $doctor = User::factory()->has(DoctorInformation::factory())->create();
-        $doctor->assignRole('doctor');
+        $doctor = User::factory()->doctor()->patient()->create();
         Sanctum::actingAs($doctor);
-        Submission::factory()->create(['state' => Submission::STATUS_PENDING]);
+        Submission::factory()->create();
         $response = $this->postJson('/api/submission/1/take');
         $response->assertStatus(200);
         $response->assertJson([
@@ -32,40 +30,34 @@ class TakeSubmissionTest extends TestCase
 
     public function test_doctor_can_not_take_in_progress_submission()
     {
-        (new RolesSeeder)->run();
-        $doctor = User::factory()->has(DoctorInformation::factory())->create();
-        $doctor->assignRole('doctor');
+        $doctor = User::factory()->doctor()->patient()->create();
         Sanctum::actingAs($doctor);
-        Submission::factory()->create(['state' => Submission::STATUS_IN_PROGRESS]);
+        Submission::factory()->inProgress()->create();
         $response = $this->postJson('/api/submission/1/take');
         $response->assertStatus(403);
     }
 
     public function test_doctor_can_not_take_ready_submission()
     {
-        (new RolesSeeder)->run();
-        $doctor = User::factory()->has(DoctorInformation::factory())->create();
-        $doctor->assignRole('doctor');
+        $doctor = User::factory()->doctor()->patient()->create();
         Sanctum::actingAs($doctor);
-        Submission::factory()->create(['state' => Submission::STATUS_READY]);
+        Submission::factory()->ready()->create();
         $response = $this->postJson('/api/submission/1/take');
         $response->assertStatus(403);
     }
 
     public function test_patient_can_not_take_pending_submission()
     {
-        (new RolesSeeder)->run();
-        $patient = User::factory()->has(PatientInformation::factory())->create();
-        $patient->assignRole('patient');
+        $patient = User::factory()->patient()->create();
         Sanctum::actingAs($patient);
-        Submission::factory()->create(['state' => Submission::STATUS_PENDING]);
+        Submission::factory()->create();
         $response = $this->postJson('/api/submission/1/take');
         $response->assertStatus(403);
     }
 
     public function test_guest_can_not_take_pending_submission()
     {
-        Submission::factory()->create(['state' => Submission::STATUS_PENDING]);
+        Submission::factory()->create();
         $response = $this->postJson('/api/submission/1/take');
         $response->assertStatus(401);
     }

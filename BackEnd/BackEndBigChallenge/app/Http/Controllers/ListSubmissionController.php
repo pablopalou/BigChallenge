@@ -16,10 +16,10 @@ class ListSubmissionController extends Controller
     {
         // state is a query param that is not mandatory and role is mandatory
         $user = User::find(Auth::user()->id);
-        if ($user->hasRole('patient') || $request->get('role') == 'patient'){ 
-            $submissions = Submission::patientListSubmissions()->filter(request(['state']))->get();
+        if ($user->hasRole('doctor') && $request->get('role') == 'doctor'){
+            $submissions = Submission::doctorListSubmissions()->filter(request(['state']))->get();            
         } else {
-            $submissions = Submission::doctorListSubmissions()->filter(request(['state']))->get();
+            $submissions = Submission::patientListSubmissions()->filter(request(['state']))->get();
         }
         return new SubmissionResourceCollection($submissions);
     }

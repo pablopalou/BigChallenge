@@ -15,8 +15,7 @@ class CreateSubmissionTest extends TestCase
     //Remember that a doctor can also be a patient
     public function test_submission_created_by_patient_successfully()
     {
-        $user = User::factory()->create();
-        $patient = PatientInformation::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
 
         $response = $this->postJson('/api/createSubmission', [
@@ -31,8 +30,7 @@ class CreateSubmissionTest extends TestCase
 
     public function test_submission_by_a_guest()
     {
-        $user = User::factory()->create();
-        $patient = PatientInformation::factory()->create(['user_id' => $user->id]);
+        User::factory()->patient()->create();
 
         $response = $this->postJson('/api/createSubmission', [
             'symptoms' => 'I have temperature since yeasterday and sore throat',

@@ -15,10 +15,7 @@ class UpdateDoctorInformationTest extends TestCase
 
     public function test_update_doctor_information_successfully()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        $user->assignRole('doctor');
-        DoctorInformation::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->doctor()->patient()->create();
         Sanctum::actingAs($user);
         $newDoctorInformation = [
             'grade' => '2',
@@ -34,10 +31,7 @@ class UpdateDoctorInformationTest extends TestCase
 
     public function test_update_doctor_being_a_guest()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        $user->assignRole('doctor');
-        DoctorInformation::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->doctor()->patient()->create();
         $newDoctorInformation = [
             'grade' => '2',
             'speciality' => 'Cardiology',
@@ -48,10 +42,7 @@ class UpdateDoctorInformationTest extends TestCase
 
     public function test_update_doctor_information_being_a_patient()
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        $user->assignRole('patient');
-        DoctorInformation::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
         $newDoctorInformation = [
             'grade' => '2',
@@ -66,10 +57,7 @@ class UpdateDoctorInformationTest extends TestCase
      */
     public function test_update_doctor_information_invalid_data($data)
     {
-        (new RolesSeeder())->run();
-        $user = User::factory()->create();
-        $user->assignRole('doctor');
-        DoctorInformation::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->doctor()->patient()->create();
         Sanctum::actingAs($user);
         $response = $this->postJson('/api/updateDoctorInformation', $data);
         $response->assertStatus(422);
