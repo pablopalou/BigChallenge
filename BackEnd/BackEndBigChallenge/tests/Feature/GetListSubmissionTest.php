@@ -85,6 +85,7 @@ class GetListSubmissionTest extends TestCase
     {
         (new RolesSeeder)->run();
         $userPatient = User::factory()->has(PatientInformation::factory())->create();
+        // dd(User::where('id', '<=', '20')->count()); //prints 1
         $userPatient->assignRole('patient');
         Sanctum::actingAs($userPatient);
         Submission::factory()->count(3)->create([
@@ -110,7 +111,7 @@ class GetListSubmissionTest extends TestCase
     {
         (new RolesSeeder())->run();
         $userDoctor = User::factory()->has(DoctorInformation::factory())
-                                    // ->has(Submission::factory()->pending($userDoctor)->count(3),'submissionsMade')
+                                    ->has(Submission::factory()->pending()->count(3),'submissionsMade')
                                     ->has(Submission::factory()->inProgress()->count(7),'submissionsMade')
                                     ->has(Submission::factory()->ready()->count(10),'submissionsMade')
                                     ->has(Submission::factory()->inProgress()->count(4),'submissionsTaken')

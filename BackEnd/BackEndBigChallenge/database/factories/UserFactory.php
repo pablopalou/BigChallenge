@@ -2,9 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\DoctorInformation;
+use App\Models\PatientInformation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -39,18 +42,45 @@ class UserFactory extends Factory
         });
     }
 
-    /*
-     * Configure the model factory.
-     *
-     * @return $this
+    /**
+     * @return static
      */
-    // public function configure()
-    // {
-    //     return $this->afterMaking(function (User $user) {
-    //         //
-    //     })->afterCreating(function (User $user) {
-    //         $id = $user->id;
+    public function patient()
+    {
+        return $this->afterCreating(function (User $user) {
+            try {
+                Role::create([
+                    'name' => 'patient'
+                ]);
+            } catch (\Exception $exception) {
+                // Do nothing
+            }
 
-    //     });
-    // }
+            $user->assignRole('patient');
+
+            PatientInformation::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        });
+    }
+
+    /**
+    * @return static
+    */
+    public function doctor()
+    {
+        return $this->afterCreating(function (User $user) {
+            try {
+                Role::create([
+                    'name' => 'patient'
+                ]);
+            } catch (\Exception $exception) {
+                  // Do nothing
+            }
+            $user->assignRole('patient');
+            DoctorInformation::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        });
+    }
 }

@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Submission>
  */
+
+/**
+ * @mixin User
+ */
 class SubmissionFactory extends Factory
 {
     /**
@@ -18,64 +22,31 @@ class SubmissionFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'symptoms' => $this->faker->paragraph,
-            'patient_id' => PatientInformation::factory()->create()->user,
-            'state' => $this->faker->randomElement([Submission::STATUS_PENDING, Submission::STATUS_IN_PROGRESS, Submission::STATUS_READY]),
+            'patient_id' => User::factory()->patient(),
+            'state' => Submission::STATUS_PENDING,
         ];
     }
-
-    public function configure()
-    {
-        return $this->afterCreating(function (Submission $submission) {
-            if ($submission->state !== Submission::STATUS_PENDING) {
-                $doctor = DoctorInformation::factory()->create();
-                $submission->doctor_id = $doctor->user->id;
-
-                // assign prescription only if status is ready
-                if ($submission->state === Submission::STATUS_READY) {
-                    $submission->prescriptions = $this->faker->paragraph;
-                }
-                $submission->save();
-            }
-        });
-    }
-
-    public function pending()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'state' => Submission::STATUS_PENDING,
-            ];
-        })->afterCreating(function (Submission $submission, User $user){
-            $submission->save();
-        });
-    }
-
-    public function inProgress(User $user)
+    public function inProgress()
     {
         return $this->state(function (array $attributes) {
             return [
                 'state' => Submission::STATUS_IN_PROGRESS,
+                'doctor_id' => User::factory()->doctor(),
             ];
-        })->afterCreating(function (Submission $submission) use ($user){
-            $submission->doctor_id = $user->id;
-            $submission->save();
         });
     }
-
-    public function ready(User $user)
+    public function ready()
     {
         return $this->state(function (array $attributes) {
             return [
                 'state' => Submission::STATUS_READY,
+                'doctor_id' => User::factory()->doctor(),
+                'prescriptions' => $this->faker->paragraph,
             ];
-        })->afterCreating(function (Submission $submission) use ($user){
-            $submission->doctor_id = $user->id;
-            $submission->prescriptions = $this->faker->paragraph;
-            $submission->save();
         });
     }
 }
