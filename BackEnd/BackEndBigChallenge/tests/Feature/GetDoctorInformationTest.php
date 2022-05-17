@@ -26,25 +26,23 @@ class GetDoctorInformationTest extends TestCase
 
     public function test_patient_can_get_his_her_doctor_information()
     {
-        $user = User::factory()->patient()->create();
-        Sanctum::actingAs($user);
-
-        $submission1 = Submission::factory()->inProgress()->create(['patient_id' => $user->id]);
-        Submission::factory()->inProgress()->create();
+        $submission1 = Submission::factory()->inProgress()->create();
+        Sanctum::actingAs($submission1->patient);
 
         $response = $this->getJson('/api/getDoctorInformation/1');
         $response->assertSuccessful();
-        $response->assertJson(['message' => 'Received Doctor Information successfully',
-                                'data' =>  ['speciality' => $submission1->doctor->doctorInformation->speciality,
-                                            'grade' => $submission1->doctor->doctorInformation->grade, ],
-                                ]);
+        $response->assertJson([
+            'message' => 'Received Doctor Information successfully',
+            'data' =>  ['speciality' => $submission1->doctor->doctorInformation->speciality,
+            'grade' => $submission1->doctor->doctorInformation->grade, ],
+        ]);
     }
 
     public function test_patient_not_authorized_to_get_other_doctor_information()
     {
         $user = User::factory()->patient()->create();
-        Sanctum::actingAs($user);
         Submission::factory()->inProgress()->create();
+        Sanctum::actingAs($user);
         $response = $this->getJson('/api/getDoctorInformation/1');
         $response->assertStatus(403);
     }

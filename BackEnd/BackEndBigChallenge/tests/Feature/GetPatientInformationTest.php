@@ -32,14 +32,14 @@ class GetPatientInformationTest extends TestCase
 
     public function test_doctor_can_see_his_her_patients_information()
     {
-        // create two submissions with different patients and try to see that patients
+        // create two submissions with different patients and try to see that patient
         Submission::factory()->inProgress()->create();
         $submission2 = Submission::factory()->inProgress()->create();
 
         $patientInformation = $submission2->patient->patientInformation;
         Sanctum::actingAs($submission2->doctor);
 
-        $response = $this->getJson('/api/getPatientInformation/3');
+        $response = $this->getJson("/api/getPatientInformation/{$patientInformation->id}");
         $response->assertSuccessful();
         $response->assertJson(['message' => 'Received Patient Information successfully',
                                 'name' => $submission2->patient->name,

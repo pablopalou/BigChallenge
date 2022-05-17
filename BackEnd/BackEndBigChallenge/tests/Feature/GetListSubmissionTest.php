@@ -15,12 +15,11 @@ class GetListSubmissionTest extends TestCase
     public function test_get_all_patient_submissions()
     {
         $userPatient = User::factory()->patient()->create();
-        Sanctum::actingAs($userPatient);
         Submission::factory()->count(3)->create([
             'patient_id' => $userPatient->id,
         ]);
         Submission::factory()->count(7)->create();
-
+        Sanctum::actingAs($userPatient);
         $response = $this->getJson('/api/submission');
         $response->assertSuccessful();
         $response->assertJsonCount(3, 'data');
@@ -29,7 +28,6 @@ class GetListSubmissionTest extends TestCase
     public function test_get_all_patient_submissions_pending()
     {
         $userPatient = User::factory()->patient()->create();
-        Sanctum::actingAs($userPatient);
         Submission::factory()->count(3)->create([
             'patient_id' => $userPatient->id,
         ]);
@@ -40,7 +38,7 @@ class GetListSubmissionTest extends TestCase
             'patient_id' => $userPatient->id,
         ]);
         Submission::factory()->count(15)->create();
-
+        Sanctum::actingAs($userPatient);
         $response = $this->getJson('/api/submission?state=' . Submission::STATUS_PENDING);
         $response->assertSuccessful();
         $response->assertJsonCount(3, 'data');
@@ -49,7 +47,6 @@ class GetListSubmissionTest extends TestCase
     public function test_get_all_patient_submissions_in_progress()
     {
         $userPatient = User::factory()->patient()->create();
-        Sanctum::actingAs($userPatient);
         Submission::factory()->count(3)->create([
             'patient_id' => $userPatient->id,
         ]);
@@ -60,6 +57,7 @@ class GetListSubmissionTest extends TestCase
             'patient_id' => $userPatient->id,
         ]);
         Submission::factory()->count(15)->create();
+        Sanctum::actingAs($userPatient);
 
         $response = $this->getJson('/api/submission?state=' . Submission::STATUS_IN_PROGRESS);
         $response->assertSuccessful();
@@ -69,7 +67,6 @@ class GetListSubmissionTest extends TestCase
     public function test_get_all_patient_submissions_ready()
     {
         $userPatient = User::factory()->patient()->create();
-        Sanctum::actingAs($userPatient);
         Submission::factory()->count(3)->create([
             'patient_id' => $userPatient->id,
         ]);
@@ -80,7 +77,8 @@ class GetListSubmissionTest extends TestCase
             'patient_id' => $userPatient->id,
         ]);
         Submission::factory()->count(15)->create();
-
+        Sanctum::actingAs($userPatient);
+        
         $response = $this->getJson('/api/submission?state=' . Submission::STATUS_READY);
         $response->assertSuccessful();
         $response->assertJsonCount(5, 'data');
