@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ListSubmissionController extends Controller
+class ListSubmissionController
 {
     public function __invoke(Request $request): SubmissionResourceCollection
     {
