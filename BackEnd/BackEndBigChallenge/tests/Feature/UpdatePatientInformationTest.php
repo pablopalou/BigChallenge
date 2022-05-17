@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\PatientInformation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
@@ -14,8 +13,7 @@ class UpdatePatientInformationTest extends TestCase
 
     public function test_update_patient_information_successfully()
     {
-        $user = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
         $newPatientInformation = [
             'gender' => 'male',
@@ -33,8 +31,7 @@ class UpdatePatientInformationTest extends TestCase
 
     public function test_update_patient_being_a_guest()
     {
-        $user = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->patient()->create();
         $newPatientInformation = [
             'gender' => 'male',
             'height' => '170',
@@ -51,8 +48,7 @@ class UpdatePatientInformationTest extends TestCase
      */
     public function test_update_patient_with_invalid_data($data)
     {
-        $user = User::factory()->create();
-        PatientInformation::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->patient()->create();
         Sanctum::actingAs($user);
         $response = $this->postJson('/api/updatePatientInformation', $data);
         $response->assertStatus(422);

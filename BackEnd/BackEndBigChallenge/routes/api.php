@@ -5,6 +5,7 @@ use App\Http\Controllers\DeleteSubmissionController;
 use App\Http\Controllers\GetDoctorInformationController;
 use App\Http\Controllers\GetPatientInformationController;
 use App\Http\Controllers\GetSubmissionController;
+use App\Http\Controllers\ListSubmissionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
@@ -63,3 +64,5 @@ Route::get('/submission/{submission}', GetSubmissionController::class)->middlewa
 Route::post('/submission/{submission}/take', TakeSubmissionController::class)->middleware('auth:sanctum', 'role:doctor');
 
 Route::delete('/submission/{submission}', DeleteSubmissionController::class)->middleware('auth:sanctum', 'role:patient');
+
+Route::get('/submission', ListSubmissionController::class)->middleware('auth:sanctum');
