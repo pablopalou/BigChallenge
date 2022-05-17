@@ -25,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Model::unguard();
+        $this->app->bind(CdnService::class, DOCdnService::class);
     }
 }
