@@ -78,7 +78,7 @@ class GetListSubmissionTest extends TestCase
         ]);
         Submission::factory()->count(15)->create();
         Sanctum::actingAs($userPatient);
-        
+
         $response = $this->getJson('/api/submission?state=' . Submission::STATUS_READY);
         $response->assertSuccessful();
         $response->assertJsonCount(5, 'data');
