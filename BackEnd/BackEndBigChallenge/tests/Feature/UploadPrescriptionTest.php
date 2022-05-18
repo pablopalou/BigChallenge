@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Submission;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
@@ -13,6 +12,7 @@ use Tests\TestCase;
 class UploadPrescriptionTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_prescription_save_successfully()
     {
         $submission = Submission::factory()->inProgress()->create();
@@ -56,6 +56,7 @@ class UploadPrescriptionTest extends TestCase
         ]);
         $response->assertStatus(422);
     }
+
     public function test_prescription_must_be_txt()
     {
         $submission = Submission::factory()->inProgress()->create();
