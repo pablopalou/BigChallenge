@@ -24,8 +24,10 @@ class UploadPrescriptionNotification implements ShouldQueue
     public function handle(UploadPrescription $event): void
     {
         // grab the patient of the submission
-        $user = User::find($event->submission->patient)->first();
+        $user = $event->submission->patient;
+        // dd($event->submission->patient);
         // send mail to his/her email 
+        // dd($user[0]);
         Mail::to($user->email)->send(new PrescriptionMail($user));
     }
 }

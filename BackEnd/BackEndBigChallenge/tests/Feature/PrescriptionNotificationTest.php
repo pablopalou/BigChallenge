@@ -25,6 +25,6 @@ class PrescriptionNotificationTest extends TestCase
         $response = $this->postJson("/api/submission/{$submission->id}/prescription", [
             'prescriptions' => HttpUploadedFile::fake()->create('test.txt'),
         ]);
-        Notification::assertSentTo([User::first()], PrescriptionMail::class);
+        Notification::assertSent([User::first()], PrescriptionMail::class);
     }
 }
