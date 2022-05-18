@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CreateSubmissionController;
+use App\Http\Controllers\DeletePrescriptionController;
 use App\Http\Controllers\DeleteSubmissionController;
 use App\Http\Controllers\GetDoctorInformationController;
 use App\Http\Controllers\GetPatientInformationController;
@@ -69,3 +70,5 @@ Route::delete('/submission/{submission}', DeleteSubmissionController::class)->mi
 Route::get('/submission', ListSubmissionController::class)->middleware('auth:sanctum');
 
 Route::post('/submission/{submission}/prescription', UploadPrescriptionController::class)->middleware('auth:sanctum', 'role:doctor');
+
+Route::delete('/submission/{submission}/prescription', DeletePrescriptionController::class)->middleware('auth:sanctum', 'role:doctor');

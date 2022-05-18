@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str as SupportStr;
 
-class UploadPrescriptionController extends Controller
+class UploadPrescriptionController
 {
     public function __invoke(UploadPrescriptionRequest $request, Submission $submission): JsonResponse
     {
