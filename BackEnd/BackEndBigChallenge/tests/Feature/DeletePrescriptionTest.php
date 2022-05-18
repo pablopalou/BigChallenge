@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Submission;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
@@ -17,6 +18,7 @@ class DeletePrescriptionTest extends TestCase
     public function test_deleted_file_successfully()
     {
         Storage::fake('do');
+        Http::fake();
         $file = UploadedFile::fake()->create('test.txt');
         $uuid = (string) Str::uuid();
         Storage::put(
