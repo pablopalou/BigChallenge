@@ -36,8 +36,6 @@ class DeletePrescriptionTest extends TestCase
         Sanctum::actingAs($submission->doctor);
         $response = $this->deleteJson("/api/submission/{$submission->id}/prescription");
         $response->assertJson(['message' => 'Prescription deleted successfully']);
-        // look how to assert that file is not anymore in storage
-        // i suppose this should work
         $this->assertFalse(Storage::disk('do')->exists("pablopalou/{$response->json()['uuid']}"));
     }
 

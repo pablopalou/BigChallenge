@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UploadPrescription;
+use App\Mail\PrescriptionMail;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,16 +21,10 @@ class UploadPrescriptionNotification implements ShouldQueue
         //
     }
 
-    /**
-     * Handle the event.
-     *
-     * @param  \App\Events\UploadPrescription  $event
-     * @return void
-     */
-    public function handle(UploadPrescription $event)
+    public function handle(UploadPrescription $event): void
     {
         // grab the patient of the submission
-        $user = User::find($event->submission->patient);
+        $user = User::find($event->submission->patient)->first();
         // send mail to his/her email 
         Mail::to($user->email)->send(new PrescriptionMail($user));
     }
