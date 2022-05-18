@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile as HttpUploadedFile;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
@@ -18,13 +19,16 @@ class PrescriptionNotificationTest extends TestCase
     use RefreshDatabase;
     public function test_notification_sent_successfully()
     {
-        Notification::fake();
+        Mail::fake();
         $submission = Submission::factory()->inProgress()->create();
         Sanctum::actingAs($submission->doctor);
         Storage::fake('do');
         $response = $this->postJson("/api/submission/{$submission->id}/prescription", [
             'prescriptions' => HttpUploadedFile::fake()->create('test.txt'),
         ]);
-        Notification::assertSent([User::first()], PrescriptionMail::class);
+        // Assert that a mail was sended to the patient
+        Mail::assertSent(PrescriptionMail::class, function ($mail) use ($submission){
+            return $mail->hasTo($submission->patient->email);
+        });
     }
 }
