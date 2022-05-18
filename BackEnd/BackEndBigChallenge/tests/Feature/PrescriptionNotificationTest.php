@@ -4,12 +4,9 @@ namespace Tests\Feature;
 
 use App\Mail\PrescriptionMail;
 use App\Models\Submission;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile as HttpUploadedFile;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -17,7 +14,8 @@ use Tests\TestCase;
 class PrescriptionNotificationTest extends TestCase
 {
     use RefreshDatabase;
-    public function test_notification_sent_successfully()
+
+    public function test_mails_queued_successfully()
     {
         Mail::fake();
         $submission = Submission::factory()->inProgress()->create();
@@ -26,9 +24,6 @@ class PrescriptionNotificationTest extends TestCase
         $response = $this->postJson("/api/submission/{$submission->id}/prescription", [
             'prescriptions' => HttpUploadedFile::fake()->create('test.txt'),
         ]);
-        // Assert that a mail was sended to the patient
-        Mail::assertSent(PrescriptionMail::class, function ($mail) use ($submission){
-            return $mail->hasTo($submission->patient->email);
-        });
+        Mail::assertQueued(PrescriptionMail::class, 1);
     }
 }

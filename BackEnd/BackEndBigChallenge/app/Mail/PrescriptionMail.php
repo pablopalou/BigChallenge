@@ -8,11 +8,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PrescriptionMail extends Mailable
+class PrescriptionMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public $userPatient;
+
     /**
      * Create a new message instance.
      *

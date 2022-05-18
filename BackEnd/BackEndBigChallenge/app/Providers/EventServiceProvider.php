@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\UploadPrescription;
+use App\Listeners\UploadPrescriptionNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use App\Events\UploadPrescription;
-use App\Listeners\UploadPrescriptionNotification;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
