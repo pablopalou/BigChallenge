@@ -17,12 +17,12 @@ class UploadPrescriptionTest extends TestCase
     {
         $submission = Submission::factory()->inProgress()->create();
         Sanctum::actingAs($submission->doctor);
-        Storage::fake('do');
+        Storage::fake();
         $response = $this->postJson("/api/submission/{$submission->id}/prescription", [
             'prescriptions' => UploadedFile::fake()->create('test.txt'),
         ]);
         $response->assertJson(['message' => 'File uploaded successfully']);
-        $this->assertTrue(Storage::disk('do')->exists("pablopalou/{$response->json()['uuid']}"));
+        $this->assertTrue(Storage::exists("pablopalou/{$response->json()['uuid']}"));
     }
 
     public function test_guest_tryng_to_upload_prescription()
