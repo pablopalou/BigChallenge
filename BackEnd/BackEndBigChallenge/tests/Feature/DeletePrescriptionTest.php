@@ -18,7 +18,7 @@ class DeletePrescriptionTest extends TestCase
 
     public function test_deleted_file_successfully()
     {
-        Storage::fake('do');
+        Storage::fake();
         Http::fake();
         $file = UploadedFile::fake()->create('test.txt');
         $uuid = (string) Str::uuid();
@@ -36,12 +36,12 @@ class DeletePrescriptionTest extends TestCase
         Sanctum::actingAs($submission->doctor);
         $response = $this->deleteJson("/api/submission/{$submission->id}/prescription");
         $response->assertJson(['message' => 'Prescription deleted successfully']);
-        $this->assertFalse(Storage::disk('do')->exists("pablopalou/{$response->json()['uuid']}"));
+        $this->assertFalse(Storage::disk()->exists("pablopalou/{$response->json()['uuid']}"));
     }
 
     public function test_other_doctor_can_not_delete_prescription()
     {
-        Storage::fake('do');
+        Storage::fake();
         $userDoctor = User::factory()->doctor()->patient()->create();
         $file = UploadedFile::fake()->create('test.txt');
         $uuid = (string) Str::uuid();
@@ -61,7 +61,7 @@ class DeletePrescriptionTest extends TestCase
 
     public function test_guest_can_not_delete_prescription()
     {
-        Storage::fake('do');
+        Storage::fake();
         $userDoctor = User::factory()->doctor()->create();
         $file = UploadedFile::fake()->create('test.txt');
         $uuid = (string) Str::uuid();
