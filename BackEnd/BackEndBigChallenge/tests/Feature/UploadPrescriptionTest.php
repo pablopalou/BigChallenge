@@ -29,7 +29,7 @@ class UploadPrescriptionTest extends TestCase
     public function test_guest_tryng_to_upload_prescription()
     {
         $submission = Submission::factory()->inProgress()->create();
-        Storage::fake('do');
+        Storage::fake();
         $response = $this->postJson("/api/submission/{$submission->id}/prescription", [
             'prescriptions' => UploadedFile::fake()->create('test.txt'),
         ]);
@@ -40,7 +40,7 @@ class UploadPrescriptionTest extends TestCase
     {
         $submission = Submission::factory()->inProgress()->create();
         Sanctum::actingAs($submission->patient);
-        Storage::fake('do');
+        Storage::fake();
         $response = $this->postJson("/api/submission/{$submission->id}/prescription", [
             'prescriptions' => UploadedFile::fake()->create('test.txt'),
         ]);
@@ -51,7 +51,7 @@ class UploadPrescriptionTest extends TestCase
     {
         $submission = Submission::factory()->inProgress()->create();
         Sanctum::actingAs($submission->doctor);
-        Storage::fake('do');
+        Storage::fake();
         $response = $this->postJson("/api/submission/{$submission->id}/prescription", [
             'prescriptions' => 'Not a file',
         ]);
@@ -62,7 +62,7 @@ class UploadPrescriptionTest extends TestCase
     {
         $submission = Submission::factory()->inProgress()->create();
         Sanctum::actingAs($submission->doctor);
-        Storage::fake('do');
+        Storage::fake();
         $response = $this->postJson("/api/submission/{$submission->id}/prescription", [
             'prescriptions' => UploadedFile::fake()->create('test.png'),
         ]);

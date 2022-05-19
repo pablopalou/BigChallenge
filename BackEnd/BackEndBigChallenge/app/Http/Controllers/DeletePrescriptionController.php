@@ -15,11 +15,11 @@ class DeletePrescriptionController
         $uuid = $submission->prescriptions;
         $folder = config('filesystems.disk.do.folder');
 
-        $submission->prescriptions = null;
-        $submission->save();
-
         Storage::delete("{$folder}/{$uuid}");
         $cdnService->purge($uuid);
+
+        $submission->prescriptions = null;
+        $submission->save();
 
         return response()->json([
             'message' => 'Prescription deleted successfully',
