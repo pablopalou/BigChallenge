@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UploadPrescription;
 use App\Http\Requests\UploadPrescriptionRequest;
 use App\Models\Submission;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str as SupportStr;
 
-class UploadPrescriptionController extends Controller
+class UploadPrescriptionController
 {
     public function __invoke(UploadPrescriptionRequest $request, Submission $submission): JsonResponse
     {
@@ -23,9 +24,10 @@ class UploadPrescriptionController extends Controller
 
         // Now I have to update the submission
         $submission->prescriptions = $uuid;
+        $submission->state = Submission::STATUS_READY;
         $submission->save();
 
-        // @TODO: Make event to Notificate patient that a prescription has been made and dispatch it here.
+        event(new UploadPrescription($submission));
 
         return response()->json([
             'message' => 'File uploaded successfully',

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\UploadPrescription;
+use App\Listeners\UploadPrescriptionNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        UploadPrescription::class => [
+            UploadPrescriptionNotification::class,
         ],
     ];
 
