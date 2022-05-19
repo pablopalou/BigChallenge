@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\CdnService;
+use App\Services\DOCdnService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Model::unguard();
+        $this->app->bind(CdnService::class, DOCdnService::class);
     }
 }
