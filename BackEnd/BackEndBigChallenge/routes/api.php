@@ -37,38 +37,37 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // @TODO: create view for email not verified yet (when y add the midlleware verified and a user attempts to access, then they will be redirected to the verification.notice named route.)
 
-// @TODO: put routes grouped by roles
+Route::middleware(['guest:sanctum'])->group(function () {
+    Route::post('/login', LoginController::class);
+    Route::post('/register', RegisterController::class);
+});
 
-Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class])->middleware(['auth', 'signed'])->name('verification.verify');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/logout', LogoutController::class);
+    Route::post('/createSubmission', CreateSubmissionController::class);
+    Route::post('/updatePatientInformation', UpdatePatientInformationController::class);
+    Route::get('/submission', ListSubmissionController::class);
+    Route::put('/submission/{submission}/patient', UpdateSymptomsController::class);
+    Route::get('/getDoctorInformation/{doctorInformation}', GetDoctorInformationController::class);
+    Route::get('/getPatientInformation/{patientInformation}', GetPatientInformationController::class);
+    Route::get('/submission/{submission}', GetSubmissionController::class);
 
-Route::post('/email/verification-notification', ResendVerificationEmailController::class)->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+    Route::middleware(['role:doctor'])->group(function () {
+        Route::post('/updateDoctorInformation', UpdateDoctorInformationController::class);
+        Route::post('/submission/{submission}/take', TakeSubmissionController::class);
+        Route::post('/submission/{submission}/prescription', UploadPrescriptionController::class);
+        Route::delete('/submission/{submission}/prescription', DeletePrescriptionController::class);
+    });
 
-Route::post('/login', LoginController::class)->middleware('guest');
+    Route::middleware(['role:patient'])->group(function () {
+        Route::delete('/submission/{submission}', DeleteSubmissionController::class)->middleware('auth:sanctum', 'role:patient');
+    });
+});
 
-Route::post('/register', RegisterController::class)->middleware('guest');
+Route::middleware(['auth', 'signed'])->group(function () {
+    Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class])->middleware(['auth', 'signed'])->name('verification.verify');
+});
 
-Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
-
-Route::post('/createSubmission', CreateSubmissionController::class)->middleware('auth:sanctum');
-
-Route::post('/updatePatientInformation', UpdatePatientInformationController::class)->middleware('auth:sanctum');
-
-Route::post('/updateDoctorInformation', UpdateDoctorInformationController::class)->middleware('auth:sanctum', 'role:doctor');
-
-Route::put('/submission/{submission}/patient', UpdateSymptomsController::class)->middleware('auth:sanctum');
-
-Route::get('/getDoctorInformation/{doctorInformation}', GetDoctorInformationController::class)->middleware('auth:sanctum');
-
-Route::get('/getPatientInformation/{patientInformation}', GetPatientInformationController::class)->middleware('auth:sanctum');
-
-Route::get('/submission/{submission}', GetSubmissionController::class)->middleware('auth:sanctum');
-
-Route::post('/submission/{submission}/take', TakeSubmissionController::class)->middleware('auth:sanctum', 'role:doctor');
-
-Route::delete('/submission/{submission}', DeleteSubmissionController::class)->middleware('auth:sanctum', 'role:patient');
-
-Route::get('/submission', ListSubmissionController::class)->middleware('auth:sanctum');
-
-Route::post('/submission/{submission}/prescription', UploadPrescriptionController::class)->middleware('auth:sanctum', 'role:doctor');
-
-Route::delete('/submission/{submission}/prescription', DeletePrescriptionController::class)->middleware('auth:sanctum', 'role:doctor');
+Route::middleware(['auth', 'throttle:6,1'])->group(function () {
+    Route::post('/email/verification-notification', ResendVerificationEmailController::class)->name('verification.send');
+});
