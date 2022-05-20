@@ -15,7 +15,7 @@ class Submission extends Model
     use HasFactory;
 
     const STATUS_PENDING = 'pending';
-    const STATUS_IN_PROGRESS = 'in progress';
+    const STATUS_IN_PROGRESS = 'inProgress';
     const STATUS_READY = 'ready';
 
     public function patient(): BelongsTo

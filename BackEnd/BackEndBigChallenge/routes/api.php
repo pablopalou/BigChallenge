@@ -38,36 +38,36 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // @TODO: create view for email not verified yet (when y add the midlleware verified and a user attempts to access, then they will be redirected to the verification.notice named route.)
 
 Route::middleware(['guest:sanctum'])->group(function () {
-    Route::post('/login', LoginController::class); //Postman
-    Route::post('/register', RegisterController::class); //Postman
+    Route::post('/login', LoginController::class);
+    Route::post('/register', RegisterController::class);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/logout', LogoutController::class); //Postman
-    Route::post('/createSubmission', CreateSubmissionController::class); //Postman
-    Route::post('/updatePatientInformation', UpdatePatientInformationController::class); //Postman
+    Route::post('/logout', LogoutController::class);
+    Route::post('/createSubmission', CreateSubmissionController::class);
+    Route::post('/updatePatientInformation', UpdatePatientInformationController::class);
     Route::get('/submission', ListSubmissionController::class);
-    Route::put('/submission/{submission}/patient', UpdateSymptomsController::class); //Postman
-    Route::get('/getDoctorInformation/{doctorInformation}', GetDoctorInformationController::class); //Postman (cambiar por user id)
-    Route::get('/getPatientInformation/{patientInformation}', GetPatientInformationController::class); //Postman (cambiar por user id)
-    Route::get('/submission/{submission}', GetSubmissionController::class); //Postman
+    Route::put('/submission/{submission}/patient', UpdateSymptomsController::class);
+    Route::get('/getDoctorInformation/{doctorInformation:user_id}', GetDoctorInformationController::class);
+    Route::get('/getPatientInformation/{patientInformation:user_id}', GetPatientInformationController::class);
+    Route::get('/submission/{submission}', GetSubmissionController::class);
 
     Route::middleware(['role:doctor'])->group(function () {
         Route::post('/updateDoctorInformation', UpdateDoctorInformationController::class);
         Route::post('/submission/{submission}/take', TakeSubmissionController::class);
-        Route::post('/submission/{submission}/prescription', UploadPrescriptionController::class);
+        Route::post('/submission/{submission}/prescription', UploadPrescriptionController::class); // dont know
         Route::delete('/submission/{submission}/prescription', DeletePrescriptionController::class);
     });
 
     Route::middleware(['role:patient'])->group(function () {
-        Route::delete('/submission/{submission}', DeleteSubmissionController::class)->middleware('auth:sanctum', 'role:patient');
+        Route::delete('/submission/{submission}', DeleteSubmissionController::class);
     });
 });
 
-Route::middleware(['auth', 'signed'])->group(function () {
-    Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class])->middleware(['auth', 'signed'])->name('verification.verify');
+Route::middleware(['auth:sanctum', 'signed'])->group(function () {
+    Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)->name('verification.verify');
 });
 
-Route::middleware(['auth', 'throttle:6,1'])->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
     Route::post('/email/verification-notification', ResendVerificationEmailController::class)->name('verification.send');
 });
