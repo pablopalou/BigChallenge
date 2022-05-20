@@ -29,9 +29,8 @@ class RegisterController extends Controller
             $doctorPayload = $this->getDoctorPayload($arguments, $user);
             DoctorInformation::create($doctorPayload);
             $user->assignRole('doctor');
-        } else {
-            $user->assignRole('patient');
         }
+        $user->assignRole('patient');
 
         event(new Registered($user));
 

@@ -38,19 +38,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // @TODO: create view for email not verified yet (when y add the midlleware verified and a user attempts to access, then they will be redirected to the verification.notice named route.)
 
 Route::middleware(['guest:sanctum'])->group(function () {
-    Route::post('/login', LoginController::class);
-    Route::post('/register', RegisterController::class);
+    Route::post('/login', LoginController::class); //Postman
+    Route::post('/register', RegisterController::class); //Postman
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/logout', LogoutController::class);
-    Route::post('/createSubmission', CreateSubmissionController::class);
-    Route::post('/updatePatientInformation', UpdatePatientInformationController::class);
+    Route::post('/logout', LogoutController::class); //Postman
+    Route::post('/createSubmission', CreateSubmissionController::class); //Postman
+    Route::post('/updatePatientInformation', UpdatePatientInformationController::class); //Postman
     Route::get('/submission', ListSubmissionController::class);
-    Route::put('/submission/{submission}/patient', UpdateSymptomsController::class);
-    Route::get('/getDoctorInformation/{doctorInformation}', GetDoctorInformationController::class);
-    Route::get('/getPatientInformation/{patientInformation}', GetPatientInformationController::class);
-    Route::get('/submission/{submission}', GetSubmissionController::class);
+    Route::put('/submission/{submission}/patient', UpdateSymptomsController::class); //Postman
+    Route::get('/getDoctorInformation/{doctorInformation}', GetDoctorInformationController::class); //Postman (cambiar por user id)
+    Route::get('/getPatientInformation/{patientInformation}', GetPatientInformationController::class); //Postman (cambiar por user id)
+    Route::get('/submission/{submission}', GetSubmissionController::class); //Postman
 
     Route::middleware(['role:doctor'])->group(function () {
         Route::post('/updateDoctorInformation', UpdateDoctorInformationController::class);
