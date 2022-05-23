@@ -10,6 +10,10 @@ class GetDoctorInformationController extends Controller
 {
     public function __invoke(GetDoctorInformationRequest $request, DoctorInformation $doctorInformation): DoctorInformationResource
     {
-        return (new DoctorInformationResource($doctorInformation))->additional(['message' => 'Received Doctor Information successfully']);
+        return (new DoctorInformationResource($doctorInformation))->additional([
+            'message' => 'Received Doctor Information successfully',
+            'name' => $doctorInformation->user->name,
+            'email' => $doctorInformation->user->email,
+        ]);
     }
 }
