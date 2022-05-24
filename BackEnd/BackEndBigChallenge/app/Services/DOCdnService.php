@@ -10,7 +10,7 @@ class DOCdnService implements CdnService
     {
         $folder = config('filesystems.do.folder');
         Http::asJson()->delete(
-            config('filesystems.do.cdn_endpoint') . '/cache',
+            config('filesystems.disks.do.cdn_endpoint') . '/cache',
             [
                 'files' => ["{$folder}/{$fileName}"],
             ]
