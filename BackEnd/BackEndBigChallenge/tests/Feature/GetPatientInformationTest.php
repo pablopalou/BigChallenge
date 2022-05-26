@@ -39,7 +39,7 @@ class GetPatientInformationTest extends TestCase
         $patientInformation = $submission2->patient->patientInformation;
         Sanctum::actingAs($submission2->doctor);
 
-        $response = $this->getJson("/api/getPatientInformation/{$patientInformation->id}");
+        $response = $this->getJson("/api/getPatientInformation/{$patientInformation->user_id}");
         $response->assertSuccessful();
         $response->assertJson(['message' => 'Received Patient Information successfully',
                                 'name' => $submission2->patient->name,
