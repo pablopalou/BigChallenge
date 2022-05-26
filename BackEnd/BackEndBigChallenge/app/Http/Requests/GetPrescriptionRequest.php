@@ -13,7 +13,7 @@ class GetPrescriptionRequest extends FormRequest
         /** @var Submission $submission */
         $submission = $this->route('submission');
 
-        return ($submission->state == Submission::STATUS_READY) && (($submission->patient_id == Auth::user()->id) || ($submission->doctor_id == Auth::user()->id)) ;
+        return ($submission->state == Submission::STATUS_READY) && (($submission->patient_id == Auth::user()->id) || ($submission->doctor_id == Auth::user()->id));
     }
 
     public function rules(): array
