@@ -5,6 +5,7 @@ use App\Http\Controllers\DeletePrescriptionController;
 use App\Http\Controllers\DeleteSubmissionController;
 use App\Http\Controllers\GetDoctorInformationController;
 use App\Http\Controllers\GetPatientInformationController;
+use App\Http\Controllers\GetPrescriptionController;
 use App\Http\Controllers\GetSubmissionController;
 use App\Http\Controllers\ListSubmissionController;
 use App\Http\Controllers\LoginController;
@@ -51,6 +52,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getDoctorInformation/{doctorInformation:user_id}', GetDoctorInformationController::class);
     Route::get('/getPatientInformation/{patientInformation:user_id}', GetPatientInformationController::class);
     Route::get('/submission/{submission}', GetSubmissionController::class);
+    Route::get('/submission/prescription/{submission}', GetPrescriptionController::class);
 
     Route::middleware(['role:doctor'])->group(function () {
         Route::post('/updateDoctorInformation', UpdateDoctorInformationController::class);

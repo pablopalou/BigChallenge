@@ -29,12 +29,12 @@ class GetDoctorInformationTest extends TestCase
         $submission1 = Submission::factory()->inProgress()->create();
         Sanctum::actingAs($submission1->patient);
 
-        $response = $this->getJson('/api/getDoctorInformation/1');
+        $response = $this->getJson('/api/getDoctorInformation/2');
         $response->assertSuccessful();
         $response->assertJson([
             'message' => 'Received Doctor Information successfully',
             'data' =>  ['speciality' => $submission1->doctor->doctorInformation->speciality,
-            'grade' => $submission1->doctor->doctorInformation->grade, ],
+                        'grade' => $submission1->doctor->doctorInformation->grade, ],
         ]);
     }
 
@@ -43,7 +43,7 @@ class GetDoctorInformationTest extends TestCase
         $user = User::factory()->patient()->create();
         Submission::factory()->inProgress()->create();
         Sanctum::actingAs($user);
-        $response = $this->getJson('/api/getDoctorInformation/1');
+        $response = $this->getJson('/api/getDoctorInformation/3');
         $response->assertStatus(403);
     }
 }
