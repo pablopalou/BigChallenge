@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -20,11 +21,17 @@ class LoginController extends Controller
             ]);
         }
 
+        $role = "patient";
+        if ($user->hasRole('doctor')){
+            $role = "doctor";
+        }
+
         return response()->json([
             'status' => 200,
             'message' => 'User logged succesfully',
             'id' => $user->id,
             'token' => $user->createToken('token')->plainTextToken,
+            'role' => $role,
         ]);
     }
 }
