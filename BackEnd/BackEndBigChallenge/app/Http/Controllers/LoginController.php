@@ -29,6 +29,7 @@ class LoginController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'User logged succesfully',
+            'name' => $user->name,
             'id' => $user->id,
             'token' => $user->createToken('token')->plainTextToken,
             'role' => $role,
