@@ -46,4 +46,8 @@ class Submission extends Model
     {
         return $query->where('doctor_id', Auth::user()->id);
     }
+
+    public static function scopeAllPendingSubmissions($query){
+        return $query->where('state', "pending");
+    }
 }
