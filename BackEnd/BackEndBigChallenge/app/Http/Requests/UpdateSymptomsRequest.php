@@ -13,7 +13,7 @@ class UpdateSymptomsRequest extends FormRequest
         /** @var Submission $submission */
         $submission = $this->route('submission');
 
-        return $submission->patient_id == Auth::user()->id;
+        return $submission->patient_id == Auth::user()->id && $submission->state == Submission::STATUS_PENDING;
     }
 
     public function rules(): array
