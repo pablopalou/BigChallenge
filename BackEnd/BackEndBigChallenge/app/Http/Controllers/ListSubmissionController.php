@@ -16,7 +16,7 @@ class ListSubmissionController
         $user = User::find(Auth::user()->id);
         if ($user->hasRole('doctor') && $request->get('all') == '' && $request->get('role') == 'doctor') {
             $submissions = Submission::doctorListSubmissions()->filter(request(['state']))->get();
-        } else if ($user->hasRole('doctor') && $request->get('all') == 'yes') {
+        } elseif ($user->hasRole('doctor') && $request->get('all') == 'yes') {
             $submissions = Submission::allPendingSubmissions()->get();
         } else {
             $submissions = Submission::patientListSubmissions()->filter(request(['state']))->get();

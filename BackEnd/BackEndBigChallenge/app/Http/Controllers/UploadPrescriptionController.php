@@ -32,7 +32,7 @@ class UploadPrescriptionController
         return response()->json([
             'message' => 'File uploaded successfully',
             'uuid' => $uuid,
-            'url' => $url
+            'url' => $url,
         ]);
     }
 }
