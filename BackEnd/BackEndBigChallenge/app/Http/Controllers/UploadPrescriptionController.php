@@ -15,7 +15,7 @@ class UploadPrescriptionController
     {
         $file = $request->file('prescriptions');
         // The fileName will be uuid, that is a unique identifier of the files.
-        //store file  
+        //store file
         $uuid = (string) SupportStr::uuid();
         $folder = config('filesystems.disks.do.folder');
         $path = $file->store("{$folder}/{$uuid}");
