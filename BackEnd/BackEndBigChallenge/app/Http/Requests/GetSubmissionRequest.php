@@ -15,6 +15,7 @@ class GetSubmissionRequest extends FormRequest
         $submission = $this->route('submission');
 
         $user = User::find(Auth::user()->id);
+
         return Auth::user()->id == $submission->patient_id || $submission->doctor_id == Auth::user()->id || ($submission->state == Submission::STATUS_PENDING && $user->hasRole('doctor'));
     }
 
