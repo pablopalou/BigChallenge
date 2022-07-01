@@ -15,24 +15,25 @@ class UploadPrescriptionController
     {
         $file = $request->file('prescriptions');
         // The fileName will be uuid, that is a unique identifier of the files.
+        //store file  
         $uuid = (string) SupportStr::uuid();
         $folder = config('filesystems.disks.do.folder');
-        $url = Storage::temporaryUrl(
-            "{$folder}/{$uuid}",
-            now()->addWeek()
-        );
+        $path = $file->store("{$folder}/{$uuid}");
 
         // Now I have to update the submission
-        $submission->prescriptions = $url;
+        $submission->prescriptions = $path;
         $submission->state = Submission::STATUS_READY;
         $submission->save();
 
         event(new UploadPrescription($submission));
-
+        $url = Storage::temporaryUrl(
+            "{$path}",
+            now()->addWeek()
+        );
         return response()->json([
             'message' => 'File uploaded successfully',
             'uuid' => $uuid,
-            'url' => $url
+            'url' => $url,
         ]);
     }
 }
