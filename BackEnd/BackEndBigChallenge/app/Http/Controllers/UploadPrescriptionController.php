@@ -20,16 +20,18 @@ class UploadPrescriptionController
         $folder = config('filesystems.disks.do.folder');
         $path = $file->store("{$folder}/{$uuid}");
 
-        // Now I have to update the submission
-        $submission->prescriptions = $path;
-        $submission->state = Submission::STATUS_READY;
-        $submission->save();
-
-        event(new UploadPrescription($submission));
         $url = Storage::temporaryUrl(
             "{$path}",
             now()->addWeek()
         );
+
+        // Now I have to update the submission
+        $submission->prescriptions = $url;
+        $submission->state = Submission::STATUS_READY;
+        $submission->save();
+
+        event(new UploadPrescription($submission));
+        
         return response()->json([
             'message' => 'File uploaded successfully',
             'uuid' => $uuid,

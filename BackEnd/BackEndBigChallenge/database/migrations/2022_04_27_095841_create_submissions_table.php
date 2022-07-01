@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->string('symptoms');
             $table->string('state')->default(Submission::STATUS_PENDING);
-            $table->string('prescriptions')->nullable();
+            $table->text('prescriptions')->nullable();
             $table->foreignId('patient_id')->constrained('users');
             $table->foreignId('doctor_id')->nullable()->constrained('users');
         });

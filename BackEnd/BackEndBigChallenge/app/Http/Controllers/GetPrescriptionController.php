@@ -10,17 +10,9 @@ class GetPrescriptionController extends Controller
 {
     public function __invoke(GetPrescriptionRequest $request, Submission $submission)
     {
-        $fileName = $submission['file'];
-        $folder = config('filesystems.disks.do.folder');
-
-        $url = Storage::temporaryUrl(
-            "{$folder}/{$fileName}",
-            now()->addWeek()
-        );
-
         return response()->json([
             'status' => 200,
-            'url' => $url,
+            'url' => $submission->prescriptions,
         ]);
     }
 }
