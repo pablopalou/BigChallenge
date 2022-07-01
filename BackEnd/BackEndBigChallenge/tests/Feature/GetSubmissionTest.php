@@ -62,4 +62,13 @@ class GetSubmissionTest extends TestCase
         $response = $this->getJson('/api/submission/1');
         $response->assertStatus(403);
     }
+
+    public function test_get_submission_pending_by_doctor()
+    {
+        Submission::factory()->create();
+        $userDoctor = User::factory()->doctor()->patient()->create();
+        Sanctum::actingAs($userDoctor);
+        $response = $this->getJson('/api/submission/1');
+        $response->assertStatus(200);
+    }
 }
