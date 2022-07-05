@@ -43,7 +43,7 @@ Route::middleware(['guest:sanctum'])->group(function () {
     Route::post('/register', RegisterController::class);
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum','verified'])->group(function () {
     Route::post('/logout', LogoutController::class);
     Route::post('/createSubmission', CreateSubmissionController::class);
     Route::post('/updatePatientInformation', UpdatePatientInformationController::class);
@@ -66,10 +66,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
-Route::middleware(['auth:sanctum', 'signed'])->group(function () {
+Route::middleware(['signed'])->group(function () {
     Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)->name('verification.verify');
 });
 
-Route::middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
+Route::middleware(['throttle:6,1'])->group(function () {
     Route::post('/email/verification-notification', ResendVerificationEmailController::class)->name('verification.send');
 });
