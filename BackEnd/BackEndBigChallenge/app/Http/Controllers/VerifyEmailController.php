@@ -15,7 +15,7 @@ class VerifyEmailController extends Controller
         Auth::loginUsingId($request->route('id'));
         $request->fulfill();
 
-        return redirect()->to('http://localhost:3000/');
+        return redirect()->to('http://localhost:3000/login');
         // return response()->json(['status'=>'200', 'message'=> 'User email verified succesfully']);
     }
 }
