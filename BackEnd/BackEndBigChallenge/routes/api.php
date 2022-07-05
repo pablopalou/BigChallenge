@@ -43,7 +43,7 @@ Route::middleware(['guest:sanctum'])->group(function () {
     Route::post('/register', RegisterController::class);
 });
 
-Route::middleware(['auth:sanctum','verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/logout', LogoutController::class);
     Route::post('/createSubmission', CreateSubmissionController::class);
     Route::post('/updatePatientInformation', UpdatePatientInformationController::class);

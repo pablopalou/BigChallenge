@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest as AuthEmailVerificationRequest;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class EmailVerificationRequest extends AuthEmailVerificationRequest
@@ -17,8 +16,10 @@ class EmailVerificationRequest extends AuthEmailVerificationRequest
     {
         Auth::loginUsingId($this->route('id'));
 
-        if (! hash_equals((string) $this->route('hash'),
-                          sha1($this->user()->getEmailForVerification()))) {
+        if (!hash_equals(
+            (string) $this->route('hash'),
+            sha1($this->user()->getEmailForVerification())
+        )) {
             return false;
         }
 
