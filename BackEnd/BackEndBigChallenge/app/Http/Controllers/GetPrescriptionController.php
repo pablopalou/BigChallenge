@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GetPrescriptionRequest;
 use App\Models\Submission;
-use Illuminate\Support\Facades\Storage;
 
 class GetPrescriptionController extends Controller
 {

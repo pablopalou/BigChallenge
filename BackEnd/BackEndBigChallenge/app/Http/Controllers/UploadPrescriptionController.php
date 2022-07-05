@@ -31,7 +31,7 @@ class UploadPrescriptionController
         $submission->save();
 
         event(new UploadPrescription($submission));
-        
+
         return response()->json([
             'message' => 'File uploaded successfully',
             'uuid' => $uuid,
