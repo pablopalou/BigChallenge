@@ -70,6 +70,6 @@ Route::middleware(['signed'])->group(function () {
     Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)->name('verification.verify');
 });
 
-Route::middleware(['throttle:6,1'])->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
     Route::post('/email/verification-notification', ResendVerificationEmailController::class)->name('verification.send');
 });

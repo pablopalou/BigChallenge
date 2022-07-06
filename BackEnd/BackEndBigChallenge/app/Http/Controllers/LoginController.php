@@ -32,6 +32,7 @@ class LoginController extends Controller
             'id' => $user->id,
             'token' => $user->createToken('token')->plainTextToken,
             'role' => $role,
+            'email_verified_at' => $user->email_verified_at,
         ]);
     }
 }
